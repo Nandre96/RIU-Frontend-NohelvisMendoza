@@ -1,4 +1,4 @@
-export enum PowerLevel {
+export enum PowerLevelEnum {
   LOW = 1,
   MEDIUM,
   HIGH,
