@@ -1,34 +1,34 @@
 import { GenderEnum } from '../enum/gender.enum';
-import { Gender } from '../interfaces/gender.interface';
+import { GenderView } from '../interfaces/view/gender.view.interface';
 
-export const MALE_GENDER: Gender = {
+export const MALE_GENDER: Readonly<GenderView> = {
   id: GenderEnum.Male,
   name: 'Hombbre',
 };
 
-export const FEMALE_GENDER: Gender = {
+export const FEMALE_GENDER: Readonly<GenderView> = {
   id: GenderEnum.Female,
   name: 'Mujer',
 };
 
-export const NON_BINARY_GENDER: Gender = {
+export const NON_BINARY_GENDER: Readonly<GenderView> = {
   id: GenderEnum.NonBinary,
   name: 'No binario',
 };
 
-export const UNKNOWN_GENDER: Gender = {
+export const UNKNOWN_GENDER: Readonly<GenderView> = {
   id: GenderEnum.Unknown,
   name: 'Desconocido',
 };
 
-export const GENDERS_INFO: Gender[] = [
+export const GENDERS_INFO: ReadonlyArray<Readonly<GenderView>> = [
   MALE_GENDER,
   FEMALE_GENDER,
   NON_BINARY_GENDER,
   UNKNOWN_GENDER,
 ];
 
-export const GENDER_INFO: Record<GenderEnum, Gender> = {
+export const GENDER_INFO: Readonly<Record<GenderEnum, Readonly<GenderView>>> = {
   [GenderEnum.Male]: MALE_GENDER,
   [GenderEnum.Female]: FEMALE_GENDER,
   [GenderEnum.NonBinary]: NON_BINARY_GENDER,
