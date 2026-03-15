@@ -1,7 +1,7 @@
 import { PowerLevelEnum } from '../models/enum/power-level.enum';
 import { SuperHeroResponse } from '../models/interfaces/response/super-hero.response.interface';
 
-export const HEROES_MOCK: SuperHeroResponse[] = [
+export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
   {
     id: 1,
     name: 'Superman',
