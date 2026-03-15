@@ -79,7 +79,7 @@ export const UNKNOWN_AFFILIATION_INFO: Readonly<AffiliationView> = {
   universe: UniverseEnum.UNKNOWN,
 };
 
-export const AFILIACIONES_INFO: Readonly<Record<AffiliationEnum, Readonly<AffiliationView>>> = {
+export const AFFILIATIONS_INFO: Readonly<Record<AffiliationEnum, Readonly<AffiliationView>>> = {
   [AffiliationEnum.JUSTICE_LEAGUE]: JUSTICE_LEAGUE_AFFILIATION_INFO,
   [AffiliationEnum.BAT_FAMILY]: BAT_FAMILY_AFFILIATION_INFO,
   [AffiliationEnum.GREEN_LANTERN_CORPS]: GREEN_LANTERN_CORPS_AFFILIATION_INFO,
