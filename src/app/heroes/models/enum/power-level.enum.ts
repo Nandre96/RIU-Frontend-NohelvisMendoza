@@ -3,4 +3,5 @@ export enum PowerLevelEnum {
   MEDIUM,
   HIGH,
   GODLIKE,
+  UNKNOWN,
 }

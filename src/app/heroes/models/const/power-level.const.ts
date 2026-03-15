@@ -21,9 +21,15 @@ const GODLIKE_POWER_LEVEL_META: Readonly<PowerLevelView> = {
   color: '#DC2626',
 };
 
+const UNKNOWN_POWER_LEVEL_META: Readonly<PowerLevelView> = {
+  label: 'Desconocido',
+  color: '#6B7280',
+};
+
 export const POWER_LEVEL_META: Readonly<Record<PowerLevelEnum, Readonly<PowerLevelView>>> = {
   [PowerLevelEnum.LOW]: LOW_POWER_LEVEL_META,
   [PowerLevelEnum.MEDIUM]: MEDIUM_POWER_LEVEL_META,
   [PowerLevelEnum.HIGH]: HIGH_POWER_LEVEL_META,
   [PowerLevelEnum.GODLIKE]: GODLIKE_POWER_LEVEL_META,
+  [PowerLevelEnum.UNKNOWN]: UNKNOWN_POWER_LEVEL_META,
 };
