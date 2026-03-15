@@ -3,7 +3,7 @@ import { GenderView } from '../interfaces/view/gender.view.interface';
 
 export const MALE_GENDER: Readonly<GenderView> = {
   id: GenderEnum.Male,
-  name: 'Hombbre',
+  name: 'Hombre',
 };
 
 export const FEMALE_GENDER: Readonly<GenderView> = {
