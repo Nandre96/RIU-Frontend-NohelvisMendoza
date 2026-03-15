@@ -1,9 +1,15 @@
 @let superHeroes = superHeroesViewService.superHeroes();
 
+<div class="flex flex-row"></div>
+
 <mat-grid-list [cols]="gridCols()" rowHeight="1:1" gutterSize="1rem">
   @for (superHero of superHeroes; track superHero.id) {
     <mat-grid-tile>
-      <mat-card appearance="outlined" class="w-[98%] h-[98%] flex flex-col justify-between p-6">
+      <mat-card
+        appearance="outlined"
+        class="w-[98%] h-[98%] flex flex-col justify-between p-6 hover:cursor-pointer"
+        [routerLink]="['/heroes', superHero.slug]"
+      >
         <mat-card-title>{{ superHero.name }}</mat-card-title>
 
         <mat-card-subtitle>{{ superHero.civilOccupation }}</mat-card-subtitle>
@@ -52,8 +58,13 @@
           </div>
 
           <div class="flex flex-row items-end justify-end">
-            <button matButton="filled">Modificar</button>
-            <button matButton="filled">Eliminar</button>
+            <button mat-button (click)="onEdit(superHero); $event.stopPropagation()">
+              Modificar
+            </button>
+
+            <button mat-button color="warn" (click)="onDelete(superHero); $event.stopPropagation()">
+              Eliminar
+            </button>
           </div>
         </mat-card-content>
       </mat-card>

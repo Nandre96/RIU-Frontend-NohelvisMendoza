@@ -6,7 +6,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
+import { SuperHeroView } from '../../models/interfaces/view/super-hero.view.interface';
 import { SuperHeroViewService } from '../../services/super-hero-view';
 @Component({
   selector: 'app-super-hero-list',
@@ -17,6 +19,7 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
     MatDividerModule,
     MatButtonModule,
     MatIconButton,
+    RouterLink,
   ],
   templateUrl: './super-hero-list.html',
   styleUrls: ['./super-hero-list.css'],
@@ -24,7 +27,7 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
 export class SuperHeroList {
   private readonly breakpointObserver = inject(BreakpointObserver);
   readonly superHeroesViewService = inject(SuperHeroViewService);
-
+  private readonly router = inject(Router);
   readonly #currentBreakpoint = toSignal(
     this.breakpointObserver
       .observe([
@@ -56,4 +59,13 @@ export class SuperHeroList {
     if (breakPoint === 'Medium' || breakPoint === 'Tablet') return 2;
     return 3;
   });
+
+  onEdit(hero: SuperHeroView): void {
+    this.superHeroesViewService.selectHero(hero.id);
+    this.router.navigate(['/heroes', hero.id, 'edit']);
+  }
+
+  onDelete(hero: SuperHeroView): void {
+    this.superHeroesViewService.deleteHero(hero.id);
+  }
 }
