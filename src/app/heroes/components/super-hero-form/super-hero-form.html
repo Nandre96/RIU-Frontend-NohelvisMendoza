@@ -1,1 +1,146 @@
-<p>super-hero-form works!</p>
+<div>Estamos en modo edición</div>
+<p class="text-sm text-gray-500">Aquí puedes modificar los datos del superhéroe</p>
+
+<form [formGroup]="superHeroFG" class="grid grid-flow-row-dense gap-4">
+  <pre>{{ superHeroFG.value | json }}</pre>
+  <div class="flex flex-col">
+    <div class="flex items-center gap-2 text-gray-700">
+      <mat-icon>badge</mat-icon>
+      <p class="text-2xl text-gray-700">Información del superhéroe</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="flex flex-col md:flex-row justify-between gap-4 mt-4">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" appInputUpperCase />
+
+        <mat-error appErrorMessageForm [messages]="{ pattern: 'Solo letras y números' }">
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Ocupación civil</mat-label>
+        <input matInput formControlName="civilOccupation" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Editorial</mat-label>
+        <mat-select formControlName="publisher">
+          @for (publisher of PUBLISHERS_INFO; track publisher.id) {
+            <mat-option [value]="publisher">{{ publisher.label }}</mat-option>
+          }
+        </mat-select>
+
+        <mat-error
+          appErrorMessageForm
+          [messages]="{ pattern: 'La editorial es obligatoria' }"
+        ></mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-2 text-gray-700">
+    <mat-icon>account_circle</mat-icon>
+    <p class="text-2xl">Perfil</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div formGroupName="profile" class="grid grid-cols-2 gap-4">
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
+      <mat-label>Origen</mat-label>
+      <input matInput formControlName="origin" />
+
+      <mat-error
+        appErrorMessageForm
+        [messages]="{
+          pattern: 'Solo se permiten letras y números',
+        }"
+      ></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
+      <mat-label>Especie</mat-label>
+      <input matInput formControlName="species" />
+      <mat-error
+        appErrorMessageForm
+        [messages]="{ required: 'La especie es obligatoria', pattern: 'Solo se permiten letras' }"
+      ></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
+      <mat-label>Altura</mat-label>
+      <input matInput formControlName="height" placeholder="1.85" />
+      <span matTextSuffix>m</span>
+      <mat-error
+        appErrorMessageForm
+        [messages]="{ pattern: 'Formato válido: 1.85 o 1,85' }"
+      ></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
+      <mat-label>Año de creación</mat-label>
+      <input matInput type="number" formControlName="creationYear" />
+      <mat-error
+        appErrorMessageForm
+        [messages]="{
+          required: 'El año de creación es obligatorio',
+          min: 'El año de creación no puede ser menor a 100',
+          max: 'El año de creación no puede ser mayor al año actual',
+        }"
+      ></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
+      <mat-label>Género</mat-label>
+      <mat-select formControlName="gender">
+        @for (gender of GENDERS_INFO; track gender.id) {
+          <mat-option [value]="gender">
+            {{ gender.name }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error appErrorMessageForm></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
+      <mat-label>Color principal</mat-label>
+      <input type="color" matInput formControlName="primaryColor" />
+      <mat-error appErrorMessageForm></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-span-2">
+      <mat-label>Foto de perfil Url</mat-label>
+      <input type="url" matInput formControlName="profileUrl" />
+      <mat-hint>Solo formato (.jpg, .jpeg, .png)</mat-hint>
+      <mat-error appErrorMessageForm></mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="flex items-center gap-2 text-gray-700">
+    <mat-icon>electric_bolt</mat-icon>
+    <p class="text-2xl text-gray-700">Poder</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div formGroupName="power" class="grid grid-cols-2 gap-4">
+    <mat-form-field appearance="outline">
+      <mat-label>Poder secreto</mat-label>
+      <input matInput formControlName="secretPower" />
+      <mat-error appErrorMessageForm></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nivel de poder</mat-label>
+      <mat-select formControlName="level">
+        @for (pLevel of POWERS_INFO; track pLevel.label) {
+          <mat-option [value]="pLevel">
+            {{ pLevel.label }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error appErrorMessageForm></mat-error>
+    </mat-form-field>
+  </div>
+</form>
