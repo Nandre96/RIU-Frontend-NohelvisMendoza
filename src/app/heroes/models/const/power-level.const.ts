@@ -21,7 +21,7 @@ const GODLIKE_POWER_LEVEL_META: Readonly<PowerLevelView> = {
   color: '#DC2626',
 };
 
-const UNKNOWN_POWER_LEVEL_META: Readonly<PowerLevelView> = {
+export const UNKNOWN_POWER_LEVEL_META: Readonly<PowerLevelView> = {
   label: 'Desconocido',
   color: '#6B7280',
 };
@@ -33,3 +33,11 @@ export const POWER_LEVEL_META: Readonly<Record<PowerLevelEnum, Readonly<PowerLev
   [PowerLevelEnum.GODLIKE]: GODLIKE_POWER_LEVEL_META,
   [PowerLevelEnum.UNKNOWN]: UNKNOWN_POWER_LEVEL_META,
 };
+
+export const POWERS_INFO: ReadonlyArray<Readonly<PowerLevelView>> = [
+  LOW_POWER_LEVEL_META,
+  MEDIUM_POWER_LEVEL_META,
+  HIGH_POWER_LEVEL_META,
+  GODLIKE_POWER_LEVEL_META,
+  UNKNOWN_POWER_LEVEL_META,
+];
