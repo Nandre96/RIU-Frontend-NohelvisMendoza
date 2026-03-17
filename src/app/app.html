@@ -1,9 +1,13 @@
-<main class="main">
-  <section class="my-20">
-    <h1 class="text-7xl font-medium text-center">{{ title() }}</h1>
-  </section>
-
-  <section>
-    <router-outlet />
-  </section>
+<header class="my-20">
+  <h1
+    class="text-9xl md:text-[8rem] 2xl:text-[10rem] font-medium text-start p-4 text-wrap md:text-nowrap tracking-tighter text-amber-400"
+  >
+    {{ title() | uppercase }}
+  </h1>
+</header>
+<div class="mx-6 my-4">
+  <mat-divider></mat-divider>
+</div>
+<main class="box-border p-0 my-0 mx-auto px-8 max-w-360">
+  <router-outlet />
 </main>
