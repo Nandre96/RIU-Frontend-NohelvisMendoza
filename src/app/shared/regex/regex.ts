@@ -1,0 +1,5 @@
+export const HEIGHT_REGEX = /^[12][.,]\d{2}$/;
+export const LETTER_NUMBER_REGEX = /^[A-Za-z0-9\s]+$/;
+export const LETTER_REGEX = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/;
+export const IMAGE_URL_REGEX = /^https?:\/\/.+\.(?:png|jpe?g)(?:\?.*)?$/i;
+export const LETTER_OR_NA_REGEX = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s\/]+$/;
