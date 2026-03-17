@@ -48,7 +48,7 @@ export class SuperHeroViewService {
     stream: ({ params }) => this.superHeroService.getByName(params.search),
   });
 
-  private readonly allSuperHeroesResource = rxResource<SuperHeroResponse[], void>({
+  readonly allSuperHeroesResource = rxResource<SuperHeroResponse[], void>({
     stream: () => this.superHeroService.getAll(),
   });
 

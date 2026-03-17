@@ -1,73 +1,22 @@
-@let superHeroes = superHeroesViewService.superHeroes();
+@let superHeroes = pagedSuperHeroes();
 
-<div class="flex flex-row"></div>
+<div class="flex flex-row justify-end items-center mb-4 gap-4">
+  <a matButton="elevated" color="primary" href="heroes/new">Crear Héroe</a>
 
-<mat-grid-list [cols]="gridCols()" rowHeight="1:1" gutterSize="1rem">
-  @for (superHero of superHeroes; track superHero.id) {
-    <mat-grid-tile>
-      <mat-card
-        appearance="outlined"
-        class="w-[98%] h-[98%] flex flex-col justify-between p-6 hover:cursor-pointer"
-        [routerLink]="['/heroes', superHero.slug]"
-      >
-        <mat-card-title>{{ superHero.name }}</mat-card-title>
+  <mat-paginator
+    [length]="totalHeroes()"
+    [pageIndex]="pageIndex()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="pageSizeOptions"
+    [showFirstLastButtons]="true"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+</div>
 
-        <mat-card-subtitle>{{ superHero.civilOccupation }}</mat-card-subtitle>
-        <mat-card-content class="mt-6">
-          <div class="grid grid-cols-2">
-            <figure class="relative aspect-square h-40 hover:max-w-3xs">
-              <img
-                class="w-full h-full object-contain"
-                [src]="superHero.profile.logoUrl"
-                alt="{{ superHero.name }}"
-              />
-            </figure>
-
-            <div class="flex flex-col mt-4">
-              <span class="font-medium">Poderes</span>
-              <span>{{ superHero.power.powers }}</span>
-
-              <span class="font-medium mt-4">Nivel de poder</span>
-              <span
-                class="inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold text-white"
-                [style.background-color]="superHero.power.level.color"
-                [matTooltip]="superHero.power.secretPower"
-              >
-                {{ superHero.power.level.label }}
-              </span>
-            </div>
-          </div>
-
-          <mat-divider [inset]="true"></mat-divider>
-
-          <div class="grid grid-cols-2">
-            <div class="flex flex-col mt-4">
-              <p class="font-medium">Habilidades</p>
-
-              @for (ability of superHero.abilities; track ability) {
-                <span> - {{ ability }}</span>
-              }
-            </div>
-
-            <div class="flex flex-col mt-4">
-              <p class="font-medium">Especie</p>
-              <p>{{ superHero.profile.species }}</p>
-              <p class="font-medium">Genero</p>
-              <p>{{ superHero.profile.gender.name }}</p>
-            </div>
-          </div>
-
-          <div class="flex flex-row items-end justify-end">
-            <button mat-button (click)="onEdit(superHero); $event.stopPropagation()">
-              Modificar
-            </button>
-
-            <button mat-button color="warn" (click)="onDelete(superHero); $event.stopPropagation()">
-              Eliminar
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  }
+<mat-grid-list rowHeight="1:1" gutterSize="1rem">
+  <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
+    @for (superHero of superHeroes; track superHero.id) {
+      <app-super-heroe-item [superHeroe]="superHero" />
+    }
+  </div>
 </mat-grid-list>
