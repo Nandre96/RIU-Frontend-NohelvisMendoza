@@ -27,11 +27,12 @@ export class SuperHeroViewService {
   });
 
   readonly superHeroes = computed<SuperHeroView[]>(() => {
-    const data = this.superHeroFetchResource.value();
-    if (!data) {
-      return [];
-    }
-    return data.map((hero) => this.superHeroAdapter.toSuperHeroView(hero));
+    const allsHero = this.allSuperHeroes();
+    const nameToSearch = this.searchHeroName().trim().toLowerCase();
+    if (!nameToSearch) return allsHero;
+    return allsHero.filter((heroInfo: SuperHeroView) =>
+      heroInfo.name.toLowerCase().includes(nameToSearch),
+    );
   });
 
   readonly selectedSuperHero = computed<SuperHeroView | null>(() => {
@@ -50,7 +51,7 @@ export class SuperHeroViewService {
     return this.superHeroAdapter.viewToSuperHeroFormValue(selected);
   });
 
-  private readonly superHeroFetchResource = rxResource<SuperHeroResponse[], { search: string }>({
+  readonly superHeroFetchResource = rxResource<SuperHeroResponse[], { search: string }>({
     params: () => ({ search: this.searchHeroName() }),
     stream: ({ params }) => this.superHeroService.getByName(params.search),
   });

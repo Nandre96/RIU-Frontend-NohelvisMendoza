@@ -1,8 +1,14 @@
 @let superHeroes = pagedSuperHeroes();
 
-<div class="flex flex-row justify-end items-center mb-4 gap-4">
-  <a matButton="elevated" color="primary" href="heroes/new">Crear Héroe</a>
+<div class="flex flex-row justify-end my-6">
+  <a matButton="filled" color="primary" [routerLink]="['/heroes', 'new']">Crear Héroe</a>
+</div>
 
+<div class="flex flex-row justify-end items-center my-10 gap-4">
+  <mat-form-field class="w-full" appearance="outline">
+    <mat-label>Buscar superheroe</mat-label>
+    <input matInput type="text" [formControl]="searchControl" />
+  </mat-form-field>
   <mat-paginator
     [length]="totalHeroes()"
     [pageIndex]="pageIndex()"
@@ -13,10 +19,24 @@
   ></mat-paginator>
 </div>
 
-<mat-grid-list rowHeight="1:1" gutterSize="1rem">
-  <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
-    @for (superHero of superHeroes; track superHero.id) {
-      <app-super-heroe-item [superHeroe]="superHero" />
-    }
+@if (superHeroesViewService.allSuperHeroesResource.isLoading() && superHeroes.length === 0) {
+  <div class="flex flex-col justify-center items-center">
+    <mat-spinner></mat-spinner>
+    <p>Cargando super heroes...</p>
   </div>
-</mat-grid-list>
+} @else if (
+  superHeroes.length === 0 && !superHeroesViewService.allSuperHeroesResource.isLoading()
+) {
+  <div class="flex flex-col justify-center items-center py-10">
+    <mat-icon fontSize="large" color="warn">search_off</mat-icon>
+    <p class="text-lg text-gray-500 mt-2">No se encontraron héroes</p>
+  </div>
+} @else {
+  <mat-grid-list [cols]="1" rowHeight="fit" gutterSize="1rem">
+    <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4 py-10">
+      @for (superHero of superHeroes; track superHero.id) {
+        <app-super-heroe-item [superHeroe]="superHero" />
+      }
+    </div>
+  </mat-grid-list>
+}
