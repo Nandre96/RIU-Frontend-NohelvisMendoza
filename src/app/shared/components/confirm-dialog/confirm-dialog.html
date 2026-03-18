@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Quieres eliminar a {{ hero.name }}?</h2>
+<mat-dialog-content
+  >Ahora {{ hero.name }} será eliminado. No existirá en tu universo de
+  superhéroes.</mat-dialog-content
+>
+<mat-dialog-actions>
+  <button matButton mat-dialog-close>Cancelar</button>
+  <button matButton [mat-dialog-close]="true">Eliminar</button>
+</mat-dialog-actions>
