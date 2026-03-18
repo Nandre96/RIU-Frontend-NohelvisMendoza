@@ -1,6 +1,6 @@
-<header class="my-20 cursor-pointer" [routerLink]="['/heroes']">
+<header class="my-20 cursor-pointer" [routerLink]="['/']">
   <h1
-    class="text-9xl md:text-[8rem] 2xl:text-[10rem] font-medium text-start p-4 text-wrap md:text-nowrap tracking-tighter text-amber-400"
+    class="text-9xl md:text-[128px] 2xl:text-[160px] font-medium text-start p-4 text-wrap md:text-nowrap tracking-tighter text-amber-400"
   >
     {{ title() | uppercase }}
   </h1>
@@ -8,6 +8,6 @@
 <div class="mx-6 my-4">
   <mat-divider></mat-divider>
 </div>
-<main class="box-border p-0 my-0 mx-auto px-8 max-w-360">
+<main class="box-border p-0 my-0 mx-auto px-8 w-[90%] max-w-dvw">
   <router-outlet />
 </main>
