@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { PowerLevelEnum } from '../enum/power-level.enum';
 import { AffiliationView } from './view/affiliation.view.interface';
 import { GenderView } from './view/gender.view.interface';
@@ -24,7 +24,7 @@ export interface SuperHeroFormValue {
   };
   power: {
     powers: string[];
-    level: PowerLevelEnum;
+    level: PowerLevelView;
     secretPower: string;
   };
 }
@@ -34,9 +34,9 @@ export type SuperHeroFormGroup = FormGroup<{
   civilOccupation: FormControl<string>;
   publisher: FormControl<PublisherView>;
   affiliation: FormControl<AffiliationView[]>;
-  weapons: FormControl<string[]>;
-  abilities: FormControl<string[]>;
-  weaknesses: FormControl<string[]>;
+  weapons: FormArray<FormControl<string>>;
+  abilities: FormArray<FormControl<string>>;
+  weaknesses: FormArray<FormControl<string>>;
   profile: FormGroup<{
     origin: FormControl<string | null>;
     species: FormControl<string>;
@@ -47,7 +47,7 @@ export type SuperHeroFormGroup = FormGroup<{
     profileUrl: FormControl<string>;
   }>;
   power: FormGroup<{
-    powers: FormControl<string[]>;
+    powers: FormArray<FormControl<string>>;
     level: FormControl<PowerLevelView>;
     secretPower: FormControl<string>;
   }>;
