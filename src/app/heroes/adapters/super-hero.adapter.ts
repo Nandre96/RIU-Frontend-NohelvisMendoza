@@ -6,7 +6,11 @@ import { PUBLISHER_INFO } from '../models/const/publisher.const';
 import { AffiliationEnum } from '../models/enum/affiliation.enum';
 import { UniverseEnum } from '../models/enum/universe.enum';
 import { SuperHeroResponse } from '../models/interfaces/response/super-hero.response.interface';
+import { SuperHeroFormValue } from '../models/interfaces/super-heroe-form.interface';
+import { AffiliationView } from '../models/interfaces/view/affiliation.view.interface';
 import { SuperHeroView } from '../models/interfaces/view/super-hero.view.interface';
+import { CreateSuperHeroRequest } from '../models/types/request/create-super-heroe.request.type';
+import { UpdateSuperHeroRequest } from '../models/types/request/update-super-heroe.request.type';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +42,62 @@ export class SuperHeroAdapterService {
       abilities: hero.abilities,
       weaknesses: hero.weaknesses,
     };
+  }
+
+  viewToSuperHeroFormValue(hero: SuperHeroView): SuperHeroFormValue {
+    console.log({ hero });
+    return {
+      name: hero.name,
+      civilOccupation: hero.civilOccupation,
+      publisher: hero.publisher,
+      affiliation: hero.affiliation,
+      weapons: hero.weapons,
+      abilities: hero.abilities,
+      weaknesses: hero.weaknesses,
+      profile: {
+        origin: hero.profile.origin,
+        species: hero.profile.species,
+        height: hero.profile.height,
+        creationYear: hero.profile.creationYear,
+        gender: hero.profile.gender,
+        primaryColor: hero.profile.primaryColor,
+        profileUrl: hero.profile.logoUrl,
+      },
+      power: {
+        powers: hero.power.powers.split(',').map((power) => power.trim()),
+        level: hero.power.level,
+        secretPower: hero.power.secretPower,
+      },
+    };
+  }
+
+  formValueToPayload(
+    formValue: SuperHeroFormValue,
+    isEdit: boolean,
+    id?: number,
+  ): CreateSuperHeroRequest | UpdateSuperHeroRequest {
+    const basePayload = {
+      ...formValue,
+      profile: {
+        ...formValue.profile,
+        gender: formValue.profile.gender.id,
+        logoUrl: formValue.profile.profileUrl,
+      },
+      publisherId: formValue.publisher.id,
+      power: {
+        ...formValue.power,
+        level: formValue.power.level.id,
+      },
+      affiliation: formValue.affiliation.map((aff: AffiliationView) => aff.id),
+    };
+
+    if (isEdit) {
+      return {
+        ...basePayload,
+        id: id!,
+      } as UpdateSuperHeroRequest;
+    }
+    return basePayload as CreateSuperHeroRequest;
   }
 
   private slugify(name: string): string {

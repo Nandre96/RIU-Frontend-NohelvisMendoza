@@ -1,17 +1,30 @@
-<div>Estamos en modo edición</div>
-<p class="text-sm text-gray-500">Aquí puedes modificar los datos del superhéroe</p>
+@if (isEditMode) {
+  <div class="flex flex-col mb-4">
+    <app-title
+      title="Editando superhéroe: {{ superHeroFG.get('name')?.value }}"
+      icon="edit"
+    ></app-title>
+    <p class="text-sm text-gray-500">
+      Modifica los datos del superhéroe y haz click en actualizar para guardar los cambios
+    </p>
+  </div>
+}
+
+@if (!isEditMode) {
+  <div class="flex flex-col mb-4">
+    <app-title title="Creando nuevo superhéroe" icon="add"></app-title>
+    <p class="text-sm text-gray-500">
+      Completa el formulario con los datos del nuevo superhéroe y haz click en guardar para
+      agregarlo a la lista
+    </p>
+  </div>
+}
 
 <form [formGroup]="superHeroFG" class="grid grid-flow-row-dense gap-4">
-  <pre>{{ superHeroFG.value | json }}</pre>
   <div class="flex flex-col">
-    <div class="flex items-center gap-2 text-gray-700">
-      <mat-icon>badge</mat-icon>
-      <p class="text-2xl text-gray-700">Información del superhéroe</p>
-    </div>
+    <app-title title="Información del superhéroe" icon="badge"></app-title>
 
-    <mat-divider></mat-divider>
-
-    <div class="flex flex-col md:flex-row justify-between gap-4 mt-4">
+    <div class="flex flex-col md:flex-row justify-between md:gap-4 mt-4">
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="name" appInputUpperCase />
@@ -24,6 +37,9 @@
         <mat-label>Ocupación civil</mat-label>
         <input matInput formControlName="civilOccupation" />
       </mat-form-field>
+    </div>
+
+    <div class="flex flex-col">
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Editorial</mat-label>
         <mat-select formControlName="publisher">
@@ -37,15 +53,20 @@
           [messages]="{ pattern: 'La editorial es obligatoria' }"
         ></mat-error>
       </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Afiliación</mat-label>
+        <mat-select formControlName="affiliation" multiple>
+          @for (affiliation of AFFILIATION_OPTIONS; track affiliation.id) {
+            <mat-option [value]="affiliation">{{ affiliation.label }}</mat-option>
+          }
+        </mat-select>
+        <mat-error appErrorMessageForm></mat-error>
+      </mat-form-field>
     </div>
   </div>
 
-  <div class="flex items-center gap-2 text-gray-700">
-    <mat-icon>account_circle</mat-icon>
-    <p class="text-2xl">Perfil</p>
-  </div>
-
-  <mat-divider></mat-divider>
+  <app-title title="Perfil" icon="account_circle"></app-title>
 
   <div formGroupName="profile" class="grid grid-cols-2 gap-4">
     <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
@@ -117,12 +138,118 @@
     </mat-form-field>
   </div>
 
-  <div class="flex items-center gap-2 text-gray-700">
-    <mat-icon>electric_bolt</mat-icon>
-    <p class="text-2xl text-gray-700">Poder</p>
+  <app-title title="Perfil de combate" icon="build"></app-title>
+
+  <div class="grid grid-cols-1 gap-6">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center w-full justify-between my">
+        <span class="font-medium text-green-500">Armas ({{ weaponsArray.length }})</span>
+
+        <button
+          type="button"
+          class="primary"
+          matFab
+          (click)="addArrayItem(weaponsArray, CombatProfileEnum.WEAPON)"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+
+      <div formArrayName="weapons" class="grid grid-cols-2 gap-2 mt-3">
+        @for (weaponControl of weaponsArray.controls; track $index) {
+          @let weaponIndex = $index + 1;
+          <div class="flex flex-row justify-between gap-3">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Arma {{ weaponIndex }}</mat-label>
+              <input matInput type="text" [formControlName]="$index" />
+            </mat-form-field>
+
+            <button
+              type="button"
+              matFab
+              (click)="removeArrayItem(weaponsArray, $index)"
+              [matTooltip]="'Eliminar arma ' + weaponIndex"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
   </div>
 
-  <mat-divider></mat-divider>
+  <div class="flex flex-col gap-2">
+    <div class="flex items-center justify-between">
+      <span class="font-medium text-blue-500">Habilidades ({{ abilitiesArray.length }})</span>
+      <button
+        type="button"
+        class="primary"
+        matFab
+        (click)="addArrayItem(abilitiesArray, CombatProfileEnum.ABILITY)"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div formArrayName="abilities" class="grid grid-cols-2 gap-2 mt-3">
+      @for (ability of abilitiesArray.controls; track $index) {
+        @let abilityIndex = $index + 1;
+        <div class="flex flex-row justify-between gap-3">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Habilidad {{ abilityIndex }}</mat-label>
+            <input matInput [formControlName]="$index" />
+          </mat-form-field>
+          <button
+            type="button"
+            matFab
+            [matTooltip]="'Eliminar Habilidad ' + abilityIndex"
+            (click)="removeArrayItem(abilitiesArray, $index)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-red-600"
+        >Debilidades ({{ weaknessesArray.length }})</span
+      >
+      <button
+        type="button"
+        matFab
+        (click)="addArrayItem(weaknessesArray, CombatProfileEnum.WEAKNESS)"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div formArrayName="weaknesses" class="grid grid-cols-2 gap-2 mt-3">
+      @for (weakness of weaknessesArray.controls; track $index) {
+        @let weaknessIndex = $index + 1;
+        <div class="flex flex-row justify-between gap-3">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Debilidad {{ weaknessIndex }}</mat-label>
+            <input matInput [formControlName]="$index" />
+          </mat-form-field>
+          <button
+            type="button"
+            matFab
+            [matTooltip]="'Eliminar Debilidad ' + weaknessIndex"
+            (click)="removeArrayItem(weaknessesArray, $index)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <app-title title="Poder" icon="electric_bolt"></app-title>
 
   <div formGroupName="power" class="grid grid-cols-2 gap-4">
     <mat-form-field appearance="outline">
@@ -142,5 +269,41 @@
       </mat-select>
       <mat-error appErrorMessageForm></mat-error>
     </mat-form-field>
+    <div class="flex flex-col gap-2 col-span-2">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium text-orange-600">Poderes ({{ powersArray.length }})</span>
+        <button type="button" matFab (click)="addArrayItem(powersArray, CombatProfileEnum.POWER)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <mat-divider></mat-divider>
+      <div formArrayName="powers" class="grid grid-cols-2 gap-2 mt-3">
+        @for (power of powersArray.controls; track $index) {
+          @let powerIndex = $index + 1;
+          <div class="flex flex-row gap-3">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Poder {{ powerIndex }}</mat-label>
+              <input matInput [formControlName]="$index" />
+            </mat-form-field>
+            <button
+              type="button"
+              matFab
+              [matTooltip]="'Eliminar Poder ' + powerIndex"
+              (click)="removeArrayItem(powersArray, $index)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-row justify-end gap-3">
+    <button matButton="filled" (click)="saveOrUpdate()" [disabled]="superHeroFG.invalid">
+      {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+
+    <button matButton="outlined" (click)="deleteHero()">Eliminar</button>
   </div>
 </form>
