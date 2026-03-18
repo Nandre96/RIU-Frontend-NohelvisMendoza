@@ -1,9 +1,12 @@
 import { Component, inject, input } from '@angular/core';
-import { MatButtonModule, MatIconButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
+import { filter, tap } from 'rxjs';
+import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm-dialog';
 import { SuperHeroView } from '../../models/interfaces/view/super-hero.view.interface';
 import { SuperHeroViewService } from '../../services/super-hero-view';
 @Component({
@@ -15,14 +18,28 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
 export class SuperHeroeItem {
   superHeroe = input.required<SuperHeroView>();
   readonly superHeroesViewService = inject(SuperHeroViewService);
+  readonly dialog = inject(MatDialog);
   private readonly router = inject(Router);
 
-  onEdit(hero: SuperHeroView): void {
-    this.superHeroesViewService.selectHero(hero.id);
-    this.router.navigate(['/heroes', hero.id, 'edit']);
+  onEdit(superHeroe: SuperHeroView): void {
+    this.superHeroesViewService.selectHero(superHeroe.id);
+    this.router.navigate(['/heroes', superHeroe.id, 'edit']);
   }
 
-  onDelete(hero: SuperHeroView): void {
-    this.superHeroesViewService.deleteHero(hero.id);
+  onDelete(superHeroe: SuperHeroView): void {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: superHeroe,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((result: boolean) => result === true),
+        tap(() => {
+          this.superHeroesViewService.deleteHero(superHeroe.id);
+          this.router.navigate(['/heroes']);
+        }),
+      )
+      .subscribe({});
   }
 }

@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filter, tap } from 'rxjs';
+import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm-dialog';
 import { Title } from '../../../shared/components/title/title';
 import {
   HEIGHT_REGEX,
@@ -68,6 +71,7 @@ export class SuperHeroForm {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly superHeroesViewService = inject(SuperHeroViewService);
+  readonly dialog = inject(MatDialog);
   isEditMode = false;
   superHeroToEdit = this.superHeroesViewService.selectedSuperHero();
   superHeroFG!: SuperHeroFormGroup;
@@ -164,8 +168,20 @@ export class SuperHeroForm {
   deleteHero(): void {
     if (!this.superHeroToEdit) return;
 
-    this.superHeroesViewService.deleteHero(this.superHeroToEdit.id);
-    this.router.navigate(['/heroes']);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: this.superHeroToEdit,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((result: boolean) => result === true),
+        tap(() => {
+          this.superHeroesViewService.deleteHero(this.superHeroToEdit!.id);
+          this.router.navigate(['/heroes']);
+        }),
+      )
+      .subscribe({});
   }
 
   private setArrayValues(array: FormArray<FormControl<string>>, values: string[]): void {
