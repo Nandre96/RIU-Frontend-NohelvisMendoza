@@ -157,18 +157,18 @@
       <mat-divider></mat-divider>
 
       <div formArrayName="weapons" class="grid grid-cols-2 gap-2 mt-3">
-        @for (weaponControl of weaponsArray.controls; track $index) {
-          @let weaponIndex = $index + 1;
+        @for (weaponControl of weaponsArray.controls; track weaponControl; let i = $index) {
+          @let weaponIndex = i + 1;
           <div class="flex flex-row justify-between gap-3">
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Arma {{ weaponIndex }}</mat-label>
-              <input matInput type="text" [formControlName]="$index" />
+              <input matInput type="text" [formControlName]="i" />
             </mat-form-field>
 
             <button
               type="button"
               matFab
-              (click)="removeArrayItem(weaponsArray, $index)"
+              (click)="removeArrayItem(weaponsArray, i)"
               [matTooltip]="'Eliminar arma ' + weaponIndex"
             >
               <mat-icon>delete</mat-icon>
@@ -193,18 +193,18 @@
     </div>
     <mat-divider></mat-divider>
     <div formArrayName="abilities" class="grid grid-cols-2 gap-2 mt-3">
-      @for (ability of abilitiesArray.controls; track $index) {
-        @let abilityIndex = $index + 1;
+      @for (ability of abilitiesArray.controls; track ability; let i = $index) {
+        @let abilityIndex = i + 1;
         <div class="flex flex-row justify-between gap-3">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Habilidad {{ abilityIndex }}</mat-label>
-            <input matInput [formControlName]="$index" />
+            <input matInput [formControlName]="i" />
           </mat-form-field>
           <button
             type="button"
             matFab
             [matTooltip]="'Eliminar Habilidad ' + abilityIndex"
-            (click)="removeArrayItem(abilitiesArray, $index)"
+            (click)="removeArrayItem(abilitiesArray, i)"
           >
             <mat-icon>delete</mat-icon>
           </button>
@@ -229,18 +229,18 @@
 
     <mat-divider></mat-divider>
     <div formArrayName="weaknesses" class="grid grid-cols-2 gap-2 mt-3">
-      @for (weakness of weaknessesArray.controls; track $index) {
-        @let weaknessIndex = $index + 1;
+      @for (weakness of weaknessesArray.controls; track weakness; let i = $index) {
+        @let weaknessIndex = i + 1;
         <div class="flex flex-row justify-between gap-3">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Debilidad {{ weaknessIndex }}</mat-label>
-            <input matInput [formControlName]="$index" />
+            <input matInput [formControlName]="i" />
           </mat-form-field>
           <button
             type="button"
             matFab
             [matTooltip]="'Eliminar Debilidad ' + weaknessIndex"
-            (click)="removeArrayItem(weaknessesArray, $index)"
+            (click)="removeArrayItem(weaknessesArray, i)"
           >
             <mat-icon>delete</mat-icon>
           </button>
@@ -278,18 +278,18 @@
       </div>
       <mat-divider></mat-divider>
       <div formArrayName="powers" class="grid grid-cols-2 gap-2 mt-3">
-        @for (power of powersArray.controls; track $index) {
-          @let powerIndex = $index + 1;
+        @for (power of powersArray.controls; track power; let i = $index) {
+          @let powerIndex = i + 1;
           <div class="flex flex-row gap-3">
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Poder {{ powerIndex }}</mat-label>
-              <input matInput [formControlName]="$index" />
+              <input matInput [formControlName]="i" />
             </mat-form-field>
             <button
               type="button"
               matFab
               [matTooltip]="'Eliminar Poder ' + powerIndex"
-              (click)="removeArrayItem(powersArray, $index)"
+              (click)="removeArrayItem(powersArray, i)"
             >
               <mat-icon>delete</mat-icon>
             </button>
