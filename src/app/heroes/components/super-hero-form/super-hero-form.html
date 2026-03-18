@@ -36,6 +36,7 @@
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Ocupación civil</mat-label>
         <input matInput formControlName="civilOccupation" />
+        <mat-error appErrorMessageForm [messages]="{ pattern: 'Solo letras y /' }"> </mat-error>
       </mat-form-field>
     </div>
 
@@ -175,6 +176,11 @@
             </button>
           </div>
         }
+        <mat-error
+          appErrorMessageForm
+          [control]="weaponsArray"
+          [messages]="{ duplicated: 'No se permiten armas duplicadas' }"
+        ></mat-error>
       </div>
     </div>
   </div>
@@ -210,6 +216,12 @@
           </button>
         </div>
       }
+
+      <mat-error
+        appErrorMessageForm
+        [control]="abilitiesArray"
+        [messages]="{ duplicated: 'No se permiten habilidades duplicadas' }"
+      ></mat-error>
     </div>
   </div>
 
@@ -246,6 +258,12 @@
           </button>
         </div>
       }
+
+      <mat-error
+        appErrorMessageForm
+        [control]="weaknessesArray"
+        [messages]="{ duplicated: 'No se permiten debilidades  duplicadas' }"
+      ></mat-error>
     </div>
   </div>
 
@@ -295,12 +313,18 @@
             </button>
           </div>
         }
+
+        <mat-error
+          appErrorMessageForm
+          [control]="powersArray"
+          [messages]="{ duplicated: 'No se permiten poderes duplicados' }"
+        ></mat-error>
       </div>
     </div>
   </div>
 
   <div class="flex flex-row justify-end gap-3">
-    <button matButton="filled" (click)="saveOrUpdate()" [disabled]="superHeroFG.invalid">
+    <button matButton="filled" (click)="saveOrUpdate()">
       {{ isEditMode ? 'Actualizar' : 'Guardar' }}
     </button>
 

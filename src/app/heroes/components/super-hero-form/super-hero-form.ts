@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FormArray,
   FormBuilder,
@@ -25,7 +26,6 @@ import {
   IMAGE_URL_REGEX,
   LETTER_NUMBER_REGEX,
   LETTER_OR_NA_REGEX,
-  LETTER_REGEX,
 } from '../../../shared/regex/regex';
 import { ErrorMessageForm } from '../../directives/error-message-form';
 import { InputUpperCase } from '../../directives/input-upper-case';
@@ -45,6 +45,7 @@ import {
 import { CreateSuperHeroRequest } from '../../models/types/request/create-super-heroe.request.type';
 import { UpdateSuperHeroRequest } from '../../models/types/request/update-super-heroe.request.type';
 import { SuperHeroViewService } from '../../services/super-hero-view';
+import { noDuplicatesValidator } from '../../validator/non-duplicates.validator';
 
 @Component({
   selector: 'app-super-hero-form',
@@ -147,8 +148,9 @@ export class SuperHeroForm {
 
   saveOrUpdate(): void {
     const formValue = this.superHeroFG.getRawValue() as SuperHeroFormValue;
-    console.log({ formValue });
+
     if (this.superHeroFG.invalid) {
+      this.superHeroesViewService.showMessage('Por favor, complete correctamente el formulario');
       this.superHeroFG.markAllAsTouched();
       return;
     }
@@ -186,21 +188,26 @@ export class SuperHeroForm {
 
   private setArrayValues(array: FormArray<FormControl<string>>, values: string[]): void {
     array.clear();
-    values.forEach((valueInfo) =>
+    values.forEach((valueInfo: string) =>
       array.push(
         this.fb.nonNullable.control(valueInfo, [
           Validators.required,
           Validators.pattern(LETTER_NUMBER_REGEX),
+          noDuplicatesValidator.bind(this),
         ]),
       ),
     );
   }
 
   private createStringArray(values: string[] = []): FormArray<FormControl<string>> {
-    return this.fb.array(
-      values.map((value: string) => this.fb.nonNullable.control(value, Validators.required)),
-      Validators.required,
+    const createControlByValueInfo = values.map((value: string) =>
+      this.fb.nonNullable.control(value, [Validators.required]),
     );
+
+    return this.fb.array(createControlByValueInfo, [
+      Validators.required,
+      noDuplicatesValidator.bind(this),
+    ]);
   }
 
   private superHeroInitForm(): void {

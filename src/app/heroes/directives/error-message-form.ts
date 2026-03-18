@@ -7,15 +7,15 @@ import { AbstractControl, ControlContainer, ValidationErrors } from '@angular/fo
 })
 export class ErrorMessageForm implements DoCheck {
   @Input() messages: Partial<Record<string, string>> = {};
+  @Input() control?: AbstractControl | null = null;
 
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly controlContainer = inject(ControlContainer, { optional: true });
 
-  private control: AbstractControl | null = null;
-
   private readonly DEFAULT_MESSAGES: Record<string, string | ((errorContext: any) => string)> = {
     required: 'Este campo es obligatorio',
     pattern: 'Formato inválido',
+    duplicated: (errorContext) => `Valor duplicado: ${errorContext.value}`,
     min: (errorContext) => `Valor mínimo: ${errorContext.min}`,
     max: (errorContext) => `Valor máximo: ${errorContext.max}`,
     minlength: (errorContext) => `Mínimo ${errorContext.requiredLength} caracteres`,
