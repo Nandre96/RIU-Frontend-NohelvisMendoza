@@ -52,10 +52,12 @@
       </div>
     </div>
 
-    <div class="flex flex-row items-end justify-end">
-      <button mat-button (click)="onEdit(superHero); $event.stopPropagation()">Modificar</button>
+    <div class="flex flex-row items-end justify-end gap-2">
+      <button matButton="filled" (click)="onEdit(superHero); $event.stopPropagation()">
+        Modificar
+      </button>
 
-      <button mat-button color="warn" (click)="onDelete(superHero); $event.stopPropagation()">
+      <button matButton="tonal" (click)="onDelete(superHero); $event.stopPropagation()">
         Eliminar
       </button>
     </div>
