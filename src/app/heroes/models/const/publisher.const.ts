@@ -7,8 +7,7 @@ export const DC_PUBLISHER_INFO: Readonly<PublisherView> = {
   label: 'DC Comics',
   description: 'Editorial estadounidense detrás de Superman, Batman y Wonder Woman.',
   foundationYear: 1934,
-  urlLogo:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl714bqRfNaysc1vlehO79uUEln_Mf2bcVxw&s',
+  urlLogo: 'https://i.pinimg.com/1200x/a0/34/e8/a034e83a560bacdc8ff85a2a304558b6.jpg',
 };
 
 export const MARVEL_PUBLISHER_INFO: Readonly<PublisherView> = {
@@ -16,8 +15,7 @@ export const MARVEL_PUBLISHER_INFO: Readonly<PublisherView> = {
   label: 'Marvel Comics',
   description: 'Editorial estadounidense detrás de Spider-Man, Iron Man y los X-Men.',
   foundationYear: 1939,
-  urlLogo:
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM5MI2Y4rAeUp8F_dyt5kKtP7CB0FY7rUkCw&s',
+  urlLogo: 'https://i.pinimg.com/736x/ef/64/ea/ef64ea60d6dbee53c4dbf6a5fcb3ca10.jpg',
 };
 
 export const UNKNOWN_PUBLISHER_INFO: Readonly<PublisherView> = {
@@ -25,7 +23,7 @@ export const UNKNOWN_PUBLISHER_INFO: Readonly<PublisherView> = {
   label: 'Desconocido',
   description: 'La información de la editorial no está disponible.',
   foundationYear: 0,
-  urlLogo: '',
+  urlLogo: 'https://i.pinimg.com/1200x/ff/70/1e/ff701efdad20396b0efdcd99495bf8e4.jpg',
 };
 
 export const PUBLISHERS_INFO: Readonly<PublisherView[]> = [
