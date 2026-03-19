@@ -45,7 +45,6 @@ export class SuperHeroAdapterService {
   }
 
   viewToSuperHeroFormValue(hero: SuperHeroView): SuperHeroFormValue {
-    console.log({ hero });
     return {
       name: hero.name,
       civilOccupation: hero.civilOccupation,

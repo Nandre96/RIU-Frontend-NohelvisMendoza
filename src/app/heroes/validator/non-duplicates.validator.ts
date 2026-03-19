@@ -8,10 +8,6 @@ export function noDuplicatesValidator(control: AbstractControl): ValidationError
     .map((controlValue) => (controlValue.value ?? '').toString().trim().toLowerCase())
     .filter((normalizedValue) => normalizedValue);
 
-  console.log({ values });
-
   const hasDuplicates = values.length !== new Set(values).size;
-
-  console.log({ hasDuplicates });
   return hasDuplicates ? { duplicated: true } : null;
 }

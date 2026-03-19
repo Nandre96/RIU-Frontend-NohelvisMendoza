@@ -48,8 +48,6 @@ export class ErrorMessageForm implements DoCheck {
     const errorKey = Object.keys(this.control.errors)[0];
     const errorValue = this.control.errors[errorKey];
     const template = this.messages[errorKey] ?? this.DEFAULT_MESSAGES[errorKey] ?? 'Campo inválido';
-
-    console.log({ template });
     return typeof template === 'function' ? template(errorValue) : template;
   }
 }

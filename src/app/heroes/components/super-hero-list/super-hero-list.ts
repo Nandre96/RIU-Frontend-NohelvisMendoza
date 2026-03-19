@@ -45,7 +45,6 @@ export class SuperHeroList {
   readonly pageIndex = signal(0);
   readonly pagedSuperHeroes = computed(() => {
     const allHeroes = this.superHeroesViewService.superHeroes();
-    console.log({ allHeroes });
     const itemsPerPage: number = this.pageSize();
     const currentPageIndex: number = this.pageIndex();
 
