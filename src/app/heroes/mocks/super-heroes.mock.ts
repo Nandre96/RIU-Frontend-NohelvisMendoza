@@ -13,12 +13,12 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
     weaknesses: ['Kriptonita', 'Magia'],
     profile: {
       origin: 'Krypton',
-      height: '1.91 m',
+      height: '1.91',
       creationYear: 1938,
       species: 'Kryptoniano',
       gender: 1,
-      primaryColor: 'Azul',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/en/3/35/Supermanflying.png',
+      primaryColor: 'blue',
+      logoUrl: 'https://i.pinimg.com/736x/5e/a1/66/5ea166f6dbd6fc71c9c3e9351856ddc1.jpg',
     },
     power: {
       powers: ['Vuelo', 'Super fuerza', 'Vision de calor'],
@@ -42,8 +42,7 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       species: 'Humano',
       gender: 1,
       primaryColor: 'Negro',
-      logoUrl:
-        'https://static.vecteezy.com/system/resources/previews/017/119/709/non_2x/batman-logo-batman-signal-on-yellow-background-free-vector.jpg',
+      logoUrl: 'https://i.pinimg.com/1200x/89/f5/ac/89f5acfeebbe801d5e05f1b6d5839d33.jpg',
     },
     power: {
       powers: ['Ninguno'],
@@ -66,9 +65,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1941,
       species: 'Semidiosa / Amazona',
       gender: 2,
-      primaryColor: 'Rojo',
-      logoUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmQsfGb7MTrvWKuZa_MPSK6Tz4YCY1Zr4SFA&s',
+      primaryColor: 'red',
+      logoUrl: 'https://i.pinimg.com/1200x/a6/17/ab/a617abe61eec85895f1db9243b334324.jpg',
     },
     power: {
       powers: ['Super fuerza', 'Vuelo'],
@@ -135,12 +133,12 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
     weaknesses: ['Ira incontrolable'],
     profile: {
       origin: 'Bomba Gamma',
-      height: '2.13 m',
+      height: '2.13',
       creationYear: 1962,
       species: 'Humano Mutado',
       gender: 1,
-      primaryColor: 'Verde',
-      logoUrl: 'https://i.pinimg.com/736x/6b/d7/01/6bd701ffe0eb760c54f3835895380a0a.jpg',
+      primaryColor: 'green',
+      logoUrl: 'https://i.pinimg.com/1200x/5b/b8/2f/5bb82f2676cb8acf2b1e9f4fe05551c4.jpg',
     },
     power: {
       powers: ['Fuerza ilimitada', 'Regeneracion'],
@@ -163,9 +161,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1962,
       species: 'Dios Asgardiano',
       gender: 1,
-      primaryColor: 'Plateado',
-      logoUrl:
-        'https://www.clipartmax.com/png/middle/182-1827252_loki-vector-thor-psd-vector-images.MARVEL-universe-action-figure-thor.png',
+      primaryColor: 'silver',
+      logoUrl: 'https://i.pinimg.com/1200x/38/22/cc/3822ccbeae7626f6897ca14858343e6d.jpg',
     },
     power: {
       powers: ['Control del clima', 'Rayo'],
@@ -188,9 +185,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1966,
       species: 'Humano mejorado',
       gender: 1,
-      primaryColor: 'Negro',
-      logoUrl:
-        'https://toppng.com/uploads/preview/black-panther-black-panther.MARVEL-vector-11562874588ttnfg8av3a.png',
+      primaryColor: 'purple',
+      logoUrl: 'https://i.pinimg.com/736x/43/29/62/4329622c9a39fd0c5c58eaa93e04692a.jpg',
     },
     power: {
       powers: ['Sentidos agudizados', 'Fuerza'],
@@ -213,9 +209,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1974,
       species: 'Mutante',
       gender: 1,
-      primaryColor: 'Amarillo',
-      logoUrl:
-        'https://static.vecteezy.com/system/resources/thumbnails/047/841/033/small.MARVEL-comics-style-sticker-free-vector.jpg',
+      primaryColor: 'orange',
+      logoUrl: 'https://i.pinimg.com/736x/f2/7c/2d/f27c2de53b31b1f9626570f015618683.jpg',
     },
     power: {
       powers: ['Curacion', 'Garras de Adamantium'],
@@ -238,9 +233,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1963,
       species: 'Humano',
       gender: 1,
-      primaryColor: 'Azul',
-      logoUrl:
-        'https://www.vhv.rs/dpng/d/279-2799014_doctor-strange-png-image-background-doctor-strange-cartoon.png',
+      primaryColor: 'navy',
+      logoUrl: 'https://i.pinimg.com/736x/4d/42/29/4d4229a4cf79f551805de8e4905e60a6.jpg',
     },
     power: {
       powers: ['Magia', 'Vuelo'],
@@ -263,9 +257,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1956,
       species: 'Humano Mutado',
       gender: 1,
-      primaryColor: 'Rojo',
-      logoUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRdYFK5MoB2EdEhYDFed0U4sBNFdx4ZkR96A&s',
+      primaryColor: 'red',
+      logoUrl: 'https://i.pinimg.com/736x/3d/0b/c1/3d0bc1aea8f52f2ce3d7d6313bfe8d8a.jpg',
     },
     power: {
       powers: ['Supervelocidad'],
@@ -288,7 +281,7 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1959,
       species: 'Humano',
       gender: 1,
-      primaryColor: 'Verde',
+      primaryColor: 'green',
       logoUrl:
         'https://www.pngplay.com/wp-content/uploads/12/Green-Lantern-Transparent-Background.png',
     },
@@ -313,8 +306,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1941,
       species: 'Hibrido Atlante',
       gender: 1,
-      primaryColor: 'Naranja',
-      logoUrl: 'https://i.pinimg.com/736x/89/66/4b/89664b8645a87b06ad6f0d6d36cbd613.jpg',
+      primaryColor: 'orange',
+      logoUrl: 'https://i.pinimg.com/1200x/d2/a1/d1/d2a1d148cc3c52857910265bbf196c40.jpg',
     },
     power: {
       powers: ['Telepatia marina'],
@@ -337,9 +330,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1963,
       species: 'Mutante',
       gender: 2,
-      primaryColor: 'Verde',
-      logoUrl:
-        'https://img.favpng.com/14/0/9/jean-grey-havok-x-men-the-dark-phoenix-saga-phoenix-force-png-favpng-Upf68TNaaKvT4t4kem0nRABAS.jpg',
+      primaryColor: 'pink',
+      logoUrl: 'https://i.pinimg.com/1200x/53/30/24/533024a61b4855152daf8d49f593b2fe.jpg',
     },
     power: {
       powers: ['Telepatia', 'Telequinesis'],
@@ -362,7 +354,7 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1939,
       species: 'Humano con Magia',
       gender: 1,
-      primaryColor: 'Rojo',
+      primaryColor: 'red',
       logoUrl: 'https://www.pngarts.com/files/4/Comic-Shazam-PNG-Image.png',
     },
     power: {
@@ -386,9 +378,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1964,
       species: 'Humano',
       gender: 2,
-      primaryColor: 'Negro',
-      logoUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWQpx2E8KCxRwKz0LzHXLMY4z_n0SCnFt0ew&s',
+      primaryColor: 'black',
+      logoUrl: 'https://i.pinimg.com/736x/f5/24/6d/f5246d5895668597313ff53593efc408.jpg',
     },
     power: {
       powers: ['Ninguno'],
@@ -436,9 +427,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1941,
       species: 'Humano mejorado',
       gender: 1,
-      primaryColor: 'Plateado',
-      logoUrl:
-        'https://img.freepik.com/vector-premium/logotipo-estrella-roja-metalica-aislada-fondo-blanco_1026543-34.jpg',
+      primaryColor: 'gray',
+      logoUrl: 'https://i.pinimg.com/736x/95/c0/85/95c08598635bb9e6a1ba02ad6b59fab1.jpg',
     },
     power: {
       powers: ['Fuerza sobrehumana (brazo)', 'Reflejos'],
@@ -486,8 +476,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1960,
       species: 'Flora colossus',
       gender: 1,
-      primaryColor: 'Marron',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/en/7/74/Groot_%28Marvel_Comics%29.png',
+      primaryColor: 'light-brown',
+      logoUrl: 'https://i.pinimg.com/1200x/a5/73/b0/a573b03b88af0ac648af620cb5d9ede3.jpg',
     },
     power: {
       powers: ['Regeneracion', 'Control de crecimiento', 'Fuerza'],
@@ -510,9 +500,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1976,
       species: 'Mapache genetico',
       gender: 1,
-      primaryColor: 'Marron',
-      logoUrl:
-        'https://upload.wikimedia.org/wikipedia/en/b/b5/Rocket_Raccoon_%28Marvel_Comics%29.png',
+      primaryColor: 'brown',
+      logoUrl: 'https://i.pinimg.com/736x/fe/0f/83/fe0f833306b8591fab25fb4645816dad.jpg',
     },
     power: {
       powers: ['Tactica avanzada', 'Manejo experto de armas'],
@@ -535,8 +524,8 @@ export const SUPER_HEROES_MOCK: SuperHeroResponse[] = [
       creationYear: 1964,
       species: 'Humana mejorada',
       gender: 2,
-      primaryColor: 'Rojo',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/en/9/90/Scarlet_Witch.png',
+      primaryColor: 'red',
+      logoUrl: 'https://i.pinimg.com/736x/9b/a5/34/9ba53431ba0987357a9e4af39e5096f1.jpg',
     },
     power: {
       powers: ['Telequinesis', 'Alteracion de la realidad', 'Hex'],
