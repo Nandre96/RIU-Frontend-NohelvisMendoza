@@ -1,5 +1,7 @@
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
+import { fakeBackendInterceptor } from '../../core/interceptors/fake-backend-interceptor';
 import { GenderEnum } from '../models/enum/gender.enum';
 import { PowerLevelEnum } from '../models/enum/power-level.enum';
 import { CreateSuperHeroRequest } from '../models/types/request/create-super-heroe.request.type';
@@ -22,7 +24,7 @@ describe('SuperHeroService', () => {
       creationYear: 2026,
       species: 'Humano',
       gender: GenderEnum.Male,
-      primaryColor: 'Azul',
+      primaryColor: 'burgundy',
       logoUrl: 'https://example.com/hero.png',
     },
     power: {
@@ -33,7 +35,9 @@ describe('SuperHeroService', () => {
   });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(withInterceptors([fakeBackendInterceptor]))],
+    });
     service = TestBed.inject(SuperHeroService);
   });
 
@@ -52,39 +56,34 @@ describe('SuperHeroService', () => {
     expect(hero?.name).toBe('Superman');
   });
 
-  it('getById should return undefined when id does not exist', async () => {
+  it('getById should return null when id does not exist', async () => {
     const hero = await firstValueFrom(service.getById(999999));
-    expect(hero).toBeUndefined();
+    expect(hero).toBeNull();
   });
 
   it('getByName should filter case-insensitive', async () => {
-    const result = await firstValueFrom(service.getByName('man'));
-    expect(result.length).toBeGreaterThan(0);
-    expect(result.some((h) => h.name === 'Batman')).toBeTrue();
+    const resultByName = await firstValueFrom(service.getByName('man'));
+    expect(resultByName.length).toBeGreaterThan(0);
+    expect(resultByName.some((h) => h.name === 'Batman')).toBeTrue();
   });
 
   it('create should add a new hero and generate id', async () => {
-    const before = await firstValueFrom(service.getAll());
-    const created = await firstValueFrom(service.create(buildCreateRequest('New Hero')));
-    const after = await firstValueFrom(service.getAll());
+    const allRegistry = await firstValueFrom(service.getAll());
+    const heroCreationResult = await firstValueFrom(service.create(buildCreateRequest('New Hero')));
+    const updatedResults = await firstValueFrom(service.getAll());
 
-    expect(created.id).toBeGreaterThan(0);
-    expect(created.name).toBe('New Hero');
-    expect(after.length).toBe(before.length + 1);
-    expect(after.some((h) => h.id === created.id)).toBeTrue();
+    expect(heroCreationResult.id).toBeGreaterThan(0);
+    expect(heroCreationResult.name).toBe('New Hero');
+    expect(updatedResults.length).toBe(allRegistry.length + 1);
+    expect(updatedResults.some((h) => h.id === heroCreationResult.id)).toBeTrue();
   });
 
   it('update should modify an existing hero', async () => {
-    const created = await firstValueFrom(service.create(buildCreateRequest('Hero To Update')));
-
+    const buildAHero = await firstValueFrom(service.create(buildCreateRequest('Hero To Update')));
     const updated = await firstValueFrom(
-      service.update({
-        id: created.id,
-        name: 'Updated Hero',
-      }),
+      service.update({ id: buildAHero.id, name: 'Updated Hero' }),
     );
-
-    const fetched = await firstValueFrom(service.getById(created.id));
+    const fetched = await firstValueFrom(service.getById(buildAHero.id));
 
     expect(updated.name).toBe('Updated Hero');
     expect(fetched?.name).toBe('Updated Hero');
@@ -92,25 +91,20 @@ describe('SuperHeroService', () => {
 
   it('update should throw error when hero does not exist', async () => {
     await expectAsync(
-      firstValueFrom(
-        service.update({
-          id: 999999,
-          name: 'No Hero',
-        }),
-      ),
-    ).toBeRejectedWithError('Super heroe no encontrado');
+      firstValueFrom(service.update({ id: 999999, name: 'No Hero' })),
+    ).toBeRejected();
   });
 
   it('delete should remove hero by id', async () => {
-    const created = await firstValueFrom(service.create(buildCreateRequest('Hero To Delete')));
-    const before = await firstValueFrom(service.getAll());
+    const heroToDelete = await firstValueFrom(service.create(buildCreateRequest('Hero To Delete')));
+    const allRegistry = await firstValueFrom(service.getAll());
 
-    await firstValueFrom(service.delete(created.id));
+    await firstValueFrom(service.delete(heroToDelete.id));
 
-    const after = await firstValueFrom(service.getAll());
-    const deleted = await firstValueFrom(service.getById(created.id));
+    const updatedResults = await firstValueFrom(service.getAll());
+    const deleted = await firstValueFrom(service.getById(heroToDelete.id));
 
-    expect(after.length).toBe(before.length - 1);
-    expect(deleted).toBeUndefined();
+    expect(updatedResults.length).toBe(allRegistry.length - 1);
+    expect(deleted).toBeNull();
   });
 });
