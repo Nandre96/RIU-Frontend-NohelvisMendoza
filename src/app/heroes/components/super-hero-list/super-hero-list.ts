@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +26,7 @@ import { SuperHeroeItem } from '../super-heroe-item/super-heroe-item';
     MatProgressSpinnerModule,
     MatIconModule,
     RouterModule,
+    MatDivider,
   ],
   templateUrl: './super-hero-list.html',
   styleUrls: ['./super-hero-list.css'],
