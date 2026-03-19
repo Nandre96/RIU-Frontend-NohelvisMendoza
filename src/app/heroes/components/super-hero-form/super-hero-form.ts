@@ -17,14 +17,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, tap } from 'rxjs';
-import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm-dialog';
 import { Title } from '../../../shared/components/title/title';
 import {
   HEIGHT_REGEX,
   IMAGE_URL_REGEX,
   LETTER_NUMBER_REGEX,
   LETTER_OR_NA_REGEX,
+  ONLY_NUMBERS_3_4_REGEX,
 } from '../../../shared/regex/regex';
 import { ErrorMessageForm } from '../../directives/error-message-form';
 import { InputUpperCase } from '../../directives/input-upper-case';
@@ -43,6 +42,7 @@ import {
 } from '../../models/interfaces/super-heroe-form.interface';
 import { CreateSuperHeroRequest } from '../../models/types/request/create-super-heroe.request.type';
 import { UpdateSuperHeroRequest } from '../../models/types/request/update-super-heroe.request.type';
+import { SuperHeroEventBus } from '../../services/super-hero-event-bus';
 import { SuperHeroViewService } from '../../services/super-hero-view';
 import { noDuplicatesValidator } from '../../validator/non-duplicates.validator';
 
@@ -71,7 +71,7 @@ export class SuperHeroForm {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly superHeroesViewService = inject(SuperHeroViewService);
-  readonly dialog = inject(MatDialog);
+  private readonly superHeroEventBus = inject(SuperHeroEventBus);
   isEditMode = false;
   superHeroToEdit = this.superHeroesViewService.selectedSuperHero();
   superHeroFG!: SuperHeroFormGroup;
@@ -105,7 +105,6 @@ export class SuperHeroForm {
         this.setArrayValues(this.abilitiesArray, selectedSuperHero.abilities ?? []);
         this.setArrayValues(this.weaknessesArray, selectedSuperHero.weaknesses ?? []);
         this.setArrayValues(this.powersArray, selectedSuperHero.power?.powers ?? []);
-
         this.superHeroFG.markAllAsTouched();
       }
     });
@@ -151,7 +150,11 @@ export class SuperHeroForm {
 
     const superHeroNameExists = this.superHeroesViewService
       .superHeroes()
-      .some((hero) => hero.name.toLowerCase() === formValue.name.trim().toLowerCase());
+      .some(
+        (hero) =>
+          hero.name.toLowerCase() === formValue.name.trim().toLowerCase() &&
+          hero.id !== this.superHeroToEdit?.id,
+      );
 
     if (this.superHeroFG.invalid) {
       this.superHeroesViewService.showMessage('Por favor, complete correctamente el formulario');
@@ -174,32 +177,20 @@ export class SuperHeroForm {
     const payload = this.superHeroesViewService.createPayload(formValue, this.isEditMode);
 
     if (this.isEditMode) {
-      this.superHeroesViewService.updateHero(payload as UpdateSuperHeroRequest);
-      this.router.navigate(['/heroes']);
+      this.superHeroEventBus.onAction('UPDATE', payload as UpdateSuperHeroRequest);
       return;
     }
-
-    this.superHeroesViewService.createHero(payload as CreateSuperHeroRequest);
-    this.router.navigate(['/heroes']);
+    this.superHeroEventBus.onAction('CREATE', payload as CreateSuperHeroRequest);
   }
 
   deleteHero(): void {
     if (!this.superHeroToEdit) return;
 
-    const dialogRef = this.dialog.open(ConfirmDialog, {
-      data: this.superHeroToEdit,
-    });
+    this.superHeroEventBus.onAction('DELETE', this.superHeroToEdit);
+  }
 
-    dialogRef
-      .afterClosed()
-      .pipe(
-        filter((result: boolean) => result === true),
-        tap(() => {
-          this.superHeroesViewService.deleteHero(this.superHeroToEdit!.id);
-          this.router.navigate(['/heroes']);
-        }),
-      )
-      .subscribe({});
+  goBack() {
+    this.router.navigate(['/heroes']);
   }
 
   private setArrayValues(array: FormArray<FormControl<string>>, values: string[]): void {
@@ -243,6 +234,7 @@ export class SuperHeroForm {
           100,
           [
             Validators.required,
+            Validators.pattern(ONLY_NUMBERS_3_4_REGEX),
             Validators.min(100),
             Validators.max(new Date().getFullYear()),
             Validators.minLength(3),

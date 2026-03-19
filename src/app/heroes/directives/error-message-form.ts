@@ -19,6 +19,7 @@ export class ErrorMessageForm implements DoCheck {
     min: (errorContext) => `Valor mínimo: ${errorContext.min}`,
     max: (errorContext) => `Valor máximo: ${errorContext.max}`,
     minlength: (errorContext) => `Mínimo ${errorContext.requiredLength} caracteres`,
+    maxlength: (errorContext) => `Máximo ${errorContext.requiredLength} caracteres`,
   };
 
   @HostBinding('textContent') errorText = '';

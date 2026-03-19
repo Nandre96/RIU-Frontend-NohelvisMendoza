@@ -12,9 +12,9 @@ import { SuperHeroEventBus } from '../../../heroes/services/super-hero-event-bus
 export class Buttons {
   superHeroe = input.required<SuperHeroView>();
   private eventBus = inject(SuperHeroEventBus);
+
   onEdit() {
-    console.log({ onEdit: this.superHeroe() });
-    this.eventBus.onAction('EDIT', this.superHeroe());
+    this.eventBus.onAction('EDIT_MODE', this.superHeroe());
   }
 
   onDelete() {

@@ -39,12 +39,12 @@
 
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Ocupación civil</mat-label>
-        <input matInput formControlName="civilOccupation" />
+        <input matInput formControlName="civilOccupation" class="mb-2" />
         <mat-error appErrorMessageForm [messages]="{ pattern: 'Solo letras y /' }"> </mat-error>
       </mat-form-field>
     </div>
 
-    <div class="flex flex-col">
+    <div class="flex flex-col mt-4">
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Editorial</mat-label>
         <mat-select formControlName="publisher">
@@ -106,11 +106,12 @@
 
     <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
       <mat-label>Año de creación</mat-label>
-      <input matInput type="number" minlength="3" maxlength="4" formControlName="creationYear" />
+      <input matInput type="text" minlength="3" maxlength="4" formControlName="creationYear" />
       <mat-error
         appErrorMessageForm
         [messages]="{
           required: 'El año de creación es obligatorio',
+          pattern: 'Solo se permiten números',
           min: 'El año de creación no puede ser menor a 100',
           max: 'El año de creación no puede ser mayor al año actual',
         }"
@@ -328,6 +329,7 @@
   </div>
 
   <div class="flex flex-row justify-end gap-3">
+    <button matButton="text" (click)="goBack()">Volver</button>
     <button matButton="filled" (click)="saveOrUpdate()">
       {{ isEditMode ? 'Actualizar' : 'Guardar' }}
     </button>
