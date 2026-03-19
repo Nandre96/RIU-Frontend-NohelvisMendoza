@@ -1,0 +1,8 @@
+<div>
+  <p class="text-2xl">{{ title() }}</p>
+  <div class="flex flex-row gap-3">
+    @for (item of list(); track item) {
+      <mat-chip>{{ item }}</mat-chip>
+    }
+  </div>
+</div>
