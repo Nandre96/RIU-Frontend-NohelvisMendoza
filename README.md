@@ -49,6 +49,7 @@ Abre tu navegador en http://localhost:4200.
 - Angular (CLI v20+)
 - Angular Material
 - Tailwind CSS
+- Docker Compose
 
 ### Testing
 
@@ -57,3 +58,15 @@ Para ejecutar los tests unitarios:
 ```bash
 ng test
 ```
+
+### Docker Compose
+
+Para levantar la aplicación con Docker Compose:
+
+1. Construye y ejecuta los contenedores:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+2. Accede a la aplicación en http://localhost:8080.
