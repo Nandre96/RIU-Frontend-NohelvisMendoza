@@ -8,6 +8,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { ChipList } from '../../../shared/components/chip-list/chip-list';
+import { ColoredLabelValue } from '../../../shared/components/colored-label-value/colored-label-value';
 import { PublisherInfo } from '../../../shared/components/publisher-info/publisher-info';
 import { SuperHeroViewService } from '../../services/super-hero-view';
 @Component({
@@ -22,6 +23,7 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
     MatChipsModule,
     ChipList,
     PublisherInfo,
+    ColoredLabelValue,
   ],
   templateUrl: './super-hero-detail.html',
   styleUrl: './super-hero-detail.css',
