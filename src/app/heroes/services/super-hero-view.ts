@@ -35,6 +35,12 @@ export class SuperHeroViewService {
     );
   });
 
+  readonly superHeroDetail = linkedSignal(() => {
+    const hero = this.superHeroDetailResource.value();
+    if (!hero) return null;
+    return this.superHeroAdapter.toSuperHeroView(hero);
+  });
+
   readonly selectedSuperHero = computed<SuperHeroView | null>(() => {
     const selectedSuperHeroId: number | null = this.selectedSuperHeroId();
     if (selectedSuperHeroId == null) {
@@ -58,6 +64,11 @@ export class SuperHeroViewService {
 
   readonly allSuperHeroesResource = rxResource<SuperHeroResponse[], void>({
     stream: () => this.superHeroService.getAll(),
+  });
+
+  readonly superHeroDetailResource = rxResource<SuperHeroResponse | undefined, number>({
+    params: () => this.selectedSuperHeroId() ?? 0,
+    stream: ({ params }) => this.superHeroService.getById(params),
   });
 
   setSearch(term: string): void {

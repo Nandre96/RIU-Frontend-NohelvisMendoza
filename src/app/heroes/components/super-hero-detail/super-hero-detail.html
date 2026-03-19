@@ -1,1 +1,120 @@
-<p>super-hero-detail works!</p>
+@let superHeroeDetail = this.superHeroesViewService.superHeroDetail();
+
+@if (superHeroesViewService.superHeroDetailResource.isLoading() && !superHeroeDetail) {
+  <mat-progress-spinner
+    class="mx-auto my-8"
+    mode="indeterminate"
+    diameter="50"
+  ></mat-progress-spinner>
+}
+
+@if (superHeroeDetail) {
+  @let profileInfo = superHeroeDetail.profile;
+  @let publisherInfo = superHeroeDetail.publisher;
+  <div class="flex flex-row gap-4 my-3">
+    <div class="flex gap-3">
+      <h1 class="text-4xl" [matTooltip]="superHeroeDetail.power.secretPower">
+        {{ superHeroeDetail.name }}
+      </h1>
+      <mat-divider vertical></mat-divider>
+    </div>
+
+    <span class="text-2xl self-center text-blue-500">{{ superHeroeDetail.civilOccupation }}</span>
+  </div>
+
+  <div class="flex flex-col gap-6">
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <h3 class="text-2xl tracking-widest">Perfil</h3>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <div class="grid grid-flow-row-dense md:grid-cols-3">
+          <figure class="relative aspect-square h-80 overflow-hidden">
+            <img
+              class="w-full h-full object-contain"
+              [src]="superHeroeDetail.profile.logoUrl"
+              [alt]="superHeroeDetail.name"
+            />
+          </figure>
+          <div class="grid grid-flow-row-dense auto-rows-max gap-4">
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Nombre:</p>
+              <p>
+                {{ superHeroeDetail.name }}
+              </p>
+            </div>
+
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Origen:</p>
+              <p>
+                {{ profileInfo.origin }}
+              </p>
+            </div>
+
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Altura:</p>
+              <p>
+                {{ profileInfo.height }}
+                <span class="text-blue-500">{{ profileInfo.height.includes('m') ? '' : 'm' }}</span>
+              </p>
+            </div>
+
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Año de creación:</p>
+              <p>
+                {{ profileInfo.creationYear }}
+              </p>
+            </div>
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Especie:</p>
+              <p>{{ profileInfo.species }}</p>
+            </div>
+
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Género:</p>
+              <p>{{ profileInfo.gender.name }}</p>
+            </div>
+
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Ocupación:</p>
+              <p>{{ superHeroeDetail.civilOccupation }}</p>
+            </div>
+
+            <div class="flex flex-row gap-1">
+              <p class="mb-0 font-medium text-blue-600">Color principal:</p>
+              <p>{{ profileInfo.primaryColor }}</p>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <app-publisher-info [publisher]="publisherInfo" />
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <h3 class="text-2xl tracking-widest">General</h3>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+
+      <mat-card-content>
+        <div class="grid grid-cols-2">
+          <div>
+            <p>Poderes</p>
+          </div>
+          <div>
+            <p class="text-2xl">Afiliación</p>
+            @for (aff of superHeroeDetail.affiliation; track aff.id) {
+              <mat-chip>{{ aff.label }}</mat-chip>
+            }
+            <app-chip-list [list]="superHeroeDetail.weapons" title="Armas"></app-chip-list>
+            <app-chip-list [list]="superHeroeDetail.weaknesses" title="Debilidades"></app-chip-list>
+            <app-chip-list [list]="superHeroeDetail.abilities" title="Habilidades"></app-chip-list>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}
