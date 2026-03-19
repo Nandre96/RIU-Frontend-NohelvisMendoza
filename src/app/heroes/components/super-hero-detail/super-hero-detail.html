@@ -11,18 +11,19 @@
 @if (superHeroeDetail) {
   @let profileInfo = superHeroeDetail.profile;
   @let publisherInfo = superHeroeDetail.publisher;
-  <div class="flex flex-row gap-4 my-3">
+  <div class="flex flex-row justify-between gap-4 my-3">
     <div class="flex gap-3">
       <h1 class="text-4xl cursor-pointer" [matTooltip]="superHeroeDetail.power.secretPower">
         {{ superHeroeDetail.name }}
       </h1>
       <mat-divider vertical></mat-divider>
+      <span class="text-2xl self-center text-blue-500">{{ superHeroeDetail.civilOccupation }}</span>
     </div>
 
-    <span class="text-2xl self-center text-blue-500">{{ superHeroeDetail.civilOccupation }}</span>
+    <app-buttons [superHeroe]="superHeroeDetail" />
   </div>
 
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-6 py-4">
     <mat-card appearance="outlined">
       <mat-card-header>
         <h3

@@ -6,10 +6,9 @@
   [routerLink]="['/heroes', superHero.id]"
 >
   <mat-card-title>{{ superHero.name }}</mat-card-title>
-
   <mat-card-subtitle>{{ superHero.civilOccupation }}</mat-card-subtitle>
   <mat-card-content class="mt-6">
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
       <figure class="relative aspect-square h-40 hover:max-w-3xs">
         <img
           class="w-full h-full object-contain"
@@ -45,21 +44,16 @@
       </div>
 
       <div class="flex flex-col mt-4">
-        <p class="font-medium">Especie</p>
-        <p>{{ superHero.profile.species }}</p>
-        <p class="font-medium">Genero</p>
-        <p>{{ superHero.profile.gender.name }}</p>
+        <p class="font-medium mb-0">
+          Especie: <span class="font-normal">{{ superHero.profile.species }}</span>
+        </p>
+
+        <p class="font-medium mb-0">
+          Genero: <span class="font-normal">{{ superHero.profile.gender.name }}</span>
+        </p>
       </div>
     </div>
 
-    <div class="flex flex-row items-end justify-end gap-2">
-      <button matButton="filled" (click)="onEdit(superHero); $event.stopPropagation()">
-        Modificar
-      </button>
-
-      <button matButton="tonal" (click)="onDelete(superHero); $event.stopPropagation()">
-        Eliminar
-      </button>
-    </div>
+    <app-buttons [superHeroe]="superHeroe()" />
   </mat-card-content>
 </mat-card>
