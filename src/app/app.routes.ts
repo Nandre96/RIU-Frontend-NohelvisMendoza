@@ -20,7 +20,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: ':slug',
+        path: ':id',
         loadComponent: () =>
           import('./heroes/components/super-hero-detail/super-hero-detail').then(
             (m) => m.SuperHeroDetail,

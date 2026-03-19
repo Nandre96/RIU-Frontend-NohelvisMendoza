@@ -1,13 +1,13 @@
-<header class="my-20 cursor-pointer" [routerLink]="['/']">
-  <h1
-    class="text-9xl md:text-[128px] 2xl:text-[160px] font-medium text-start p-4 text-wrap md:text-nowrap tracking-tighter text-amber-400"
-  >
-    {{ title() | uppercase }}
-  </h1>
-</header>
-<div class="mx-6 my-4">
-  <mat-divider></mat-divider>
-</div>
-<main class="box-border p-0 my-0 mx-auto px-8 w-[90%] max-w-dvw">
+<mat-toolbar>
+  <header class="cursor-pointer text-blue-800" [routerLink]="['/']">
+    <h1
+      class="text-9xl md:text-[128px] 2xl:text-[160px] font-medium text-start text-wrap md:text-nowrap tracking-tighter"
+    >
+      {{ title() }}
+    </h1>
+  </header>
+</mat-toolbar>
+
+<main class="box-border p-0 my-4 mx-auto px-8 w-[90%] max-w-dvw">
   <router-outlet />
 </main>
