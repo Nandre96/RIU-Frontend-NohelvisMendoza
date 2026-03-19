@@ -1,6 +1,7 @@
 @let info = publisher();
-<p class="text-2xl">Publisher</p>
-<figure class="relative aspect-square h-80 overflow-hidden">
+
+<p class="text-2xl tracking-widest uppercase">Editorial</p>
+<figure class="relative aspect-square h-40 overflow-hidden">
   <img class="w-full h-full object-contain" [src]="info.urlLogo" [alt]="info.label" />
 </figure>
 <p class="text-base mb-0">{{ info.label }} | {{ info.foundationYear }}</p>
