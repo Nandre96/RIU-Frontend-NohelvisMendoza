@@ -1,0 +1,8 @@
+<div class="flex flex-row gap-1">
+  <p class="mb-0 font-medium" [style.color]="primaryColor()">{{ label() }}</p>
+  <p class="mb-0">
+    {{ value() }}
+
+    <ng-content> </ng-content>
+  </p>
+</div>
