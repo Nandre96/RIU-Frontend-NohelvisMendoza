@@ -33,9 +33,8 @@ export class SuperHeroDetail {
   constructor() {
     effect(() => {
       const id = this.route.snapshot.paramMap.get('id');
-      console.log({ id });
 
-      this.superHeroesViewService.selectHero(Number(id));
+      this.superHeroesViewService.selectAndCheckHero(Number(id));
     });
   }
 }

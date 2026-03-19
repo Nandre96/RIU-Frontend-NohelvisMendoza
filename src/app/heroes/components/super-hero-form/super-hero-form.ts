@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FormArray,
   FormBuilder,
@@ -86,6 +85,19 @@ export class SuperHeroForm {
     this.superHeroInitForm();
 
     effect(() => {
+      const id = this.route.snapshot.paramMap.get('id');
+      this.isEditMode = !!id;
+
+      if (this.isEditMode) {
+        this.superHeroesViewService.selectHero(Number(id));
+        return;
+      } else {
+        this.superHeroesViewService.selectHero(null);
+        this.superHeroFG.reset();
+      }
+    });
+
+    effect(() => {
       const selectedSuperHero = this.superHeroesViewService.selectedSuperToFormValue();
       if (selectedSuperHero) {
         this.superHeroFG.patchValue(selectedSuperHero);
@@ -96,18 +108,6 @@ export class SuperHeroForm {
 
         this.superHeroFG.markAllAsTouched();
       }
-    });
-
-    effect(() => {
-      const id = this.route.snapshot.paramMap.get('id');
-      this.isEditMode = !!id;
-
-      if (this.isEditMode) {
-        this.superHeroesViewService.selectHero(Number(id));
-        return;
-      }
-
-      this.superHeroesViewService.selectHero(null);
     });
   }
 
@@ -149,9 +149,25 @@ export class SuperHeroForm {
   saveOrUpdate(): void {
     const formValue = this.superHeroFG.getRawValue() as SuperHeroFormValue;
 
+    const superHeroNameExists = this.superHeroesViewService
+      .superHeroes()
+      .some((hero) => hero.name.toLowerCase() === formValue.name.trim().toLowerCase());
+
     if (this.superHeroFG.invalid) {
       this.superHeroesViewService.showMessage('Por favor, complete correctamente el formulario');
       this.superHeroFG.markAllAsTouched();
+      return;
+    }
+
+    if (superHeroNameExists) {
+      this.superHeroesViewService.showMessage('Ya existe un super héroe con ese nombre');
+      this.superHeroFG.controls.name.setErrors({ duplicate: true });
+      return;
+    }
+
+    if (!formValue.name.trim()) {
+      this.superHeroesViewService.showMessage('El nombre es requerido');
+      this.superHeroFG.controls.name.setErrors({ required: true });
       return;
     }
 
@@ -219,17 +235,23 @@ export class SuperHeroForm {
       weapons: this.createStringArray(['']),
       abilities: this.createStringArray(['']),
       weaknesses: this.createStringArray(['']),
-      profile: this.fb.nonNullable.group({
+      profile: this.fb.group({
         origin: ['', [Validators.required, Validators.pattern(LETTER_NUMBER_REGEX)]],
         species: ['', [Validators.required, Validators.pattern(LETTER_OR_NA_REGEX)]],
         height: ['', [Validators.required, Validators.pattern(HEIGHT_REGEX)]],
         creationYear: [
           100,
-          [Validators.required, Validators.min(100), Validators.max(new Date().getFullYear())],
+          [
+            Validators.required,
+            Validators.min(100),
+            Validators.max(new Date().getFullYear()),
+            Validators.minLength(3),
+            Validators.maxLength(4),
+          ],
         ],
         gender: [UNKNOWN_GENDER, Validators.required],
         primaryColor: ['#000000', [Validators.required]],
-        profileUrl: ['', [Validators.required, Validators.pattern(IMAGE_URL_REGEX)]],
+        profileUrl: ['', [Validators.pattern(IMAGE_URL_REGEX)]],
       }),
       power: this.fb.nonNullable.group({
         powers: this.createStringArray(['']),

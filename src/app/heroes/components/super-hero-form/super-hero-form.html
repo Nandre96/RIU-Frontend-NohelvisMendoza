@@ -29,7 +29,11 @@
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="name" appInputUpperCase />
 
-        <mat-error appErrorMessageForm [messages]="{ pattern: 'Solo letras y números' }">
+        <mat-error
+          appErrorMessageForm
+          class="mt-1"
+          [messages]="{ pattern: 'Solo letras y números' }"
+        >
         </mat-error>
       </mat-form-field>
 
@@ -102,7 +106,7 @@
 
     <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
       <mat-label>Año de creación</mat-label>
-      <input matInput type="number" formControlName="creationYear" />
+      <input matInput type="number" minlength="3" maxlength="4" formControlName="creationYear" />
       <mat-error
         appErrorMessageForm
         [messages]="{
