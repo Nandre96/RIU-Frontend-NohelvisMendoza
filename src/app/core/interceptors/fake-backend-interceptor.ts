@@ -43,7 +43,7 @@ export const fakeBackendInterceptor: HttpInterceptorFn = (req, next) => {
     const heroIndex = superHeroes.findIndex((h) => h.id === heroId);
 
     if (heroIndex === -1) {
-      return throwError(() => new Error('Super heroe no encontrado')).pipe(delay(DEFAULT_DELAY));
+      return throwError(() => new Error('superhéroe no encontrado')).pipe(delay(DEFAULT_DELAY));
     }
 
     const updated: SuperHeroResponse = { ...superHeroes[heroIndex], ...data, id: heroId };
