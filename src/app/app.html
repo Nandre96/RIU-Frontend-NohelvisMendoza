@@ -10,4 +10,9 @@
 
 <main class="box-border p-0 my-4 mx-auto px-8 w-[90%] max-w-dvw">
   <router-outlet />
+  @if (isLoading()) {
+    <div class="fixed inset-0 bg-white/40 flex items-center justify-center z-50">
+      <mat-spinner />
+    </div>
+  }
 </main>

@@ -7,8 +7,8 @@ import { UpdateSuperHeroRequest } from '../../heroes/models/types/request/update
 import { generateNextId } from '../../shared/utils/generate-next-id.util';
 
 let superHeroes: SuperHeroResponse[] = [...SUPER_HEROES_MOCK];
-const DEFAULT_DELAY = 600;
-const SIMPLE_DETAY = 300;
+const DEFAULT_DELAY = 400;
+const SIMPLE_DELAY = 200;
 
 export const fakeBackendInterceptor: HttpInterceptorFn = (req, next) => {
   const { url, method, body } = req;
@@ -26,7 +26,7 @@ export const fakeBackendInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (method === 'GET' && isHeroIdUrl) {
     const superHero = superHeroes.find((superHeroe) => superHeroe.id === heroId);
-    return of(new HttpResponse({ status: 200, body: superHero })).pipe(delay(SIMPLE_DETAY));
+    return of(new HttpResponse({ status: 200, body: superHero })).pipe(delay(SIMPLE_DELAY));
   }
 
   if (method === 'POST' && isBasicUrl) {
@@ -56,7 +56,7 @@ export const fakeBackendInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (method === 'DELETE' && isHeroIdUrl) {
     superHeroes = superHeroes.filter((superHeroe) => superHeroe.id !== heroId);
-    return of(new HttpResponse({ status: 204 })).pipe(delay(SIMPLE_DETAY));
+    return of(new HttpResponse({ status: 204 })).pipe(delay(SIMPLE_DELAY));
   }
 
   return next(req);
