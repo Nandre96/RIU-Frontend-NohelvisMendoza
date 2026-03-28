@@ -1,33 +1,34 @@
-@let superHero = superHeroe();
+@let superHeroInfo = superHero();
 
 <mat-card
   appearance="outlined"
   class="flex-1 justify-between p-6 hover:cursor-pointer"
-  [routerLink]="['/heroes', superHero.id]"
+  [routerLink]="['/heroes', superHeroInfo.id]"
 >
-  <mat-card-title>{{ superHero.name }}</mat-card-title>
-  <mat-card-subtitle>{{ superHero.civilOccupation }}</mat-card-subtitle>
+  <mat-card-title>{{ superHeroInfo.name }}</mat-card-title>
+  <mat-card-subtitle>{{ superHeroInfo.civilOccupation }}</mat-card-subtitle>
   <mat-card-content class="mt-6">
     <div class="grid grid-cols-1 lg:grid-cols-2">
       <figure class="relative aspect-square h-40 hover:max-w-3xs">
         <img
           class="w-full h-full object-contain"
-          [src]="superHero.profile.logoUrl"
-          alt="{{ superHero.name }}"
+          [src]="superHeroInfo.profile.logoUrl"
+          alt="{{ superHeroInfo.name }}"
+          (mouseenter)="showHeroGreeting()"
         />
       </figure>
 
       <div class="flex flex-col mt-4">
         <span class="font-medium">Poderes</span>
-        <span>{{ superHero.power.powers }}</span>
+        <span>{{ superHeroInfo.power.powers }}</span>
 
         <span class="font-medium mt-4">Nivel de poder</span>
         <span
           class="inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold text-white"
-          [style.background-color]="superHero.power.level.color"
-          [matTooltip]="superHero.power.secretPower"
+          [style.background-color]="superHeroInfo.power.level.color"
+          [matTooltip]="superHeroInfo.power.secretPower"
         >
-          {{ superHero.power.level.label }}
+          {{ superHeroInfo.power.level.label }}
         </span>
       </div>
     </div>
@@ -38,22 +39,22 @@
       <div class="flex flex-col mt-4">
         <p class="font-medium">Habilidades</p>
 
-        @for (ability of superHero.abilities; track ability) {
+        @for (ability of superHeroInfo.abilities; track ability) {
           <span> - {{ ability }}</span>
         }
       </div>
 
       <div class="flex flex-col mt-4">
         <p class="font-medium mb-0">
-          Especie: <span class="font-normal">{{ superHero.profile.species }}</span>
+          Especie: <span class="font-normal">{{ superHeroInfo.profile.species }}</span>
         </p>
 
         <p class="font-medium mb-0">
-          Genero: <span class="font-normal">{{ superHero.profile.gender.name }}</span>
+          Genero: <span class="font-normal">{{ superHeroInfo.profile.gender.name }}</span>
         </p>
       </div>
     </div>
 
-    <app-buttons [superHeroe]="superHeroe()" />
+    <app-buttons [superHeroe]="superHero()" />
   </mat-card-content>
 </mat-card>
