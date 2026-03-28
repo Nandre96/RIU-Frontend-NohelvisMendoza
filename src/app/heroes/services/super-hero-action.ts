@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { EMPTY, filter, Observable, of, switchMap } from 'rxjs';
 import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog';
 import { SuperHeroView } from '../models/interfaces/view/super-hero.view.interface';
-import { CreateSuperHeroRequest } from '../models/types/request/create-super-heroe.request.type';
-import { UpdateSuperHeroRequest } from '../models/types/request/update-super-heroe.request.type';
+import { CreateSuperHeroRequest } from '../models/types/request/create-super-hero.request.type';
+import { UpdateSuperHeroRequest } from '../models/types/request/update-super-hero.request.type';
 import { SuperHeroActionType, SuperHeroEventAction } from '../models/types/super-hero-action.type';
 import { SuperHeroViewService } from './super-hero-view';
 

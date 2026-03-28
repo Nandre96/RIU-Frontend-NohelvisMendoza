@@ -1,5 +1,4 @@
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { PowerLevelEnum } from '../enum/power-level.enum';
 import { AffiliationView } from './view/affiliation.view.interface';
 import { GenderView } from './view/gender.view.interface';
 import { PowerLevelView } from './view/power-level.view.interface';

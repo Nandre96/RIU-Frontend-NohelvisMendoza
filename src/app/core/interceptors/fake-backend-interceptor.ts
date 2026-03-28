@@ -2,8 +2,8 @@ import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { delay, of, throwError } from 'rxjs';
 import { SUPER_HEROES_MOCK } from '../../heroes/mocks/super-heroes.mock';
 import { SuperHeroResponse } from '../../heroes/models/interfaces/response/super-hero.response.interface';
-import { CreateSuperHeroRequest } from '../../heroes/models/types/request/create-super-heroe.request.type';
-import { UpdateSuperHeroRequest } from '../../heroes/models/types/request/update-super-heroe.request.type';
+import { CreateSuperHeroRequest } from '../../heroes/models/types/request/create-super-hero.request.type';
+import { UpdateSuperHeroRequest } from '../../heroes/models/types/request/update-super-hero.request.type';
 import { generateNextId } from '../../shared/utils/generate-next-id.util';
 
 let superHeroes: SuperHeroResponse[] = [...SUPER_HEROES_MOCK];

@@ -41,9 +41,9 @@ import { CombatProfileEnum } from '../../models/enum/combat-profile.enum';
 import {
   SuperHeroFormGroup,
   SuperHeroFormValue,
-} from '../../models/interfaces/super-heroe-form.interface';
-import { CreateSuperHeroRequest } from '../../models/types/request/create-super-heroe.request.type';
-import { UpdateSuperHeroRequest } from '../../models/types/request/update-super-heroe.request.type';
+} from '../../models/interfaces/super-hero-form.interface';
+import { CreateSuperHeroRequest } from '../../models/types/request/create-super-hero.request.type';
+import { UpdateSuperHeroRequest } from '../../models/types/request/update-super-hero.request.type';
 import { SuperHeroActionService } from '../../services/super-hero-action';
 import { SuperHeroViewService } from '../../services/super-hero-view';
 import { noDuplicatesValidator } from '../../validator/non-duplicates.validator';

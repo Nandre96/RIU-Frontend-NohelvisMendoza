@@ -4,10 +4,10 @@ import { catchError, map, Observable, of, switchMap, take, tap, throwError } fro
 import { NotificationEventBus } from '../../shared/services/notification-event-bus';
 import { SuperHeroAdapterService } from '../adapters/super-hero.adapter';
 import { SuperHeroResponse } from '../models/interfaces/response/super-hero.response.interface';
-import { SuperHeroFormValue } from '../models/interfaces/super-heroe-form.interface';
+import { SuperHeroFormValue } from '../models/interfaces/super-hero-form.interface';
 import { SuperHeroView } from '../models/interfaces/view/super-hero.view.interface';
-import { CreateSuperHeroRequest } from '../models/types/request/create-super-heroe.request.type';
-import { UpdateSuperHeroRequest } from '../models/types/request/update-super-heroe.request.type';
+import { CreateSuperHeroRequest } from '../models/types/request/create-super-hero.request.type';
+import { UpdateSuperHeroRequest } from '../models/types/request/update-super-hero.request.type';
 import { SuperHeroService } from './super-hero';
 
 @Injectable({
