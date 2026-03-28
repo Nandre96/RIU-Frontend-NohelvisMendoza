@@ -1,13 +1,5 @@
 @let superHeroeDetail = this.superHeroesViewService.superHeroDetail();
 
-@if (superHeroesViewService.superHeroDetailResource.isLoading() && !superHeroeDetail) {
-  <mat-progress-spinner
-    class="mx-auto my-8"
-    mode="indeterminate"
-    diameter="50"
-  ></mat-progress-spinner>
-}
-
 @if (superHeroeDetail) {
   @let profileInfo = superHeroeDetail.profile;
   @let publisherInfo = superHeroeDetail.publisher;
