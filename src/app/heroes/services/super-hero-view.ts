@@ -53,7 +53,6 @@ export class SuperHeroViewService {
       (superHero) => superHero.id === selectedSuperHeroIdToEdit,
     );
 
-    console.log({ current });
     return current ?? null;
   });
 
@@ -109,9 +108,7 @@ export class SuperHeroViewService {
         this.allSuperHeroesResource.reload();
         return of(hero);
       }),
-      tap(() => {
-        this.notificationBus.notify({ message: 'Super héroe creado correctamente' });
-      }),
+      tap(() => this.notificationBus.notify({ message: 'Super héroe creado correctamente' })),
       catchError(() => {
         return throwError(() => new Error('Error al crear el super héroe'));
       }),
@@ -127,9 +124,7 @@ export class SuperHeroViewService {
         this.allSuperHeroesResource.reload();
         return of(updatedHero);
       }),
-      tap(() => {
-        this.notificationBus.notify({ message: 'Super héroe actualizado correctamente' });
-      }),
+      tap(() => this.notificationBus.notify({ message: 'Super héroe actualizado correctamente' })),
       catchError(() => {
         return throwError(() => new Error('Error al actualizar el super héroe'));
       }),
@@ -144,9 +139,7 @@ export class SuperHeroViewService {
         this.allSuperHeroesResource.reload();
         return of(true);
       }),
-      tap(() => {
-        this.notificationBus.notify({ message: 'Super héroe eliminado correctamente' });
-      }),
+      tap(() => this.notificationBus.notify({ message: 'Super héroe eliminado correctamente' })),
       catchError(() => {
         return throwError(() => new Error('Error al eliminar el super héroe'));
       }),
