@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, linkedSignal, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, EMPTY, map, tap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
+import { NotificationEventBus } from '../../shared/services/notification-event-bus';
 import { SuperHeroAdapterService } from '../adapters/super-hero.adapter';
 import { SuperHeroResponse } from '../models/interfaces/response/super-hero.response.interface';
 import { SuperHeroFormValue } from '../models/interfaces/super-heroe-form.interface';
@@ -16,7 +16,8 @@ import { SuperHeroService } from './super-hero';
 export class SuperHeroViewService {
   private readonly superHeroService = inject(SuperHeroService);
   private readonly superHeroAdapter = inject(SuperHeroAdapterService);
-  private readonly snackBar = inject(MatSnackBar);
+
+  private readonly notificationBus = inject(NotificationEventBus);
   readonly searchHeroName = signal('');
   readonly selectedSuperHeroIdToEdit = signal<number | null>(null);
   readonly selectedHeroIdToCheck = signal<number | null>(null);
@@ -51,10 +52,12 @@ export class SuperHeroViewService {
     const current = this.superHeroes().find(
       (superHero) => superHero.id === selectedSuperHeroIdToEdit,
     );
+
+    console.log({ current });
     return current ?? null;
   });
 
-  readonly selectedSuperToFormValue = linkedSignal(() => {
+  readonly selectedSuperToFormValue = linkedSignal<SuperHeroFormValue | null>(() => {
     const selected = this.selectedSuperHero();
     if (!selected) return null;
     return this.superHeroAdapter.viewToSuperHeroFormValue(selected);
@@ -97,65 +100,56 @@ export class SuperHeroViewService {
     );
   }
 
-  createHero(payload: CreateSuperHeroRequest): void {
-    this.superHeroService
-      .create(payload)
-      .pipe(
-        map((created) => this.superHeroAdapter.toSuperHeroView(created)),
-        tap(() => {
-          this.superHeroFetchResource.reload();
-          this.allSuperHeroesResource.reload();
-          this.showMessage('Super héroe creado correctamente');
-        }),
-        catchError((error) => {
-          console.error('Error al crear ', error);
-          this.showMessage('Error al crear el super héroe');
-          return EMPTY;
-        }),
-      )
-      .subscribe();
+  createHero(payload: CreateSuperHeroRequest): Observable<SuperHeroView> {
+    return this.superHeroService.create(payload).pipe(
+      take(1),
+      map((created) => this.superHeroAdapter.toSuperHeroView(created)),
+      switchMap((hero: SuperHeroView) => {
+        this.superHeroFetchResource.reload();
+        this.allSuperHeroesResource.reload();
+        return of(hero);
+      }),
+      tap(() => {
+        this.notificationBus.notify({ message: 'Super héroe creado correctamente' });
+      }),
+      catchError(() => {
+        return throwError(() => new Error('Error al crear el super héroe'));
+      }),
+    );
   }
 
-  updateHero(payload: UpdateSuperHeroRequest): void {
-    this.superHeroService
-      .update(payload)
-      .pipe(
-        map((updated) => this.superHeroAdapter.toSuperHeroView(updated)),
-        tap(() => {
-          this.superHeroFetchResource.reload();
-          this.allSuperHeroesResource.reload();
-          this.showMessage('Super héroe actualizado correctamente');
-        }),
-        catchError((error) => {
-          console.error('Error al actualizar', error);
-          this.showMessage('Error al actualizar el super héroe');
-          return EMPTY;
-        }),
-      )
-      .subscribe();
+  updateHero(payload: UpdateSuperHeroRequest): Observable<SuperHeroView> {
+    return this.superHeroService.update(payload).pipe(
+      take(1),
+      map((updated) => this.superHeroAdapter.toSuperHeroView(updated)),
+      switchMap((updatedHero: SuperHeroView) => {
+        this.superHeroFetchResource.reload();
+        this.allSuperHeroesResource.reload();
+        return of(updatedHero);
+      }),
+      tap(() => {
+        this.notificationBus.notify({ message: 'Super héroe actualizado correctamente' });
+      }),
+      catchError(() => {
+        return throwError(() => new Error('Error al actualizar el super héroe'));
+      }),
+    );
   }
 
-  deleteHero(id: number): void {
-    this.superHeroService
-      .delete(id)
-      .pipe(
-        tap(() => {
-          this.superHeroFetchResource.reload();
-          this.allSuperHeroesResource.reload();
-          this.showMessage('Super héroe eliminado correctamente');
-        }),
-        catchError((error) => {
-          console.error('Error al eliminar', error);
-          this.showMessage('Error al eliminar el super héroe');
-          return EMPTY;
-        }),
-      )
-      .subscribe();
-  }
-
-  showMessage(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-    });
+  deleteHero(id: number): Observable<boolean> {
+    return this.superHeroService.delete(id).pipe(
+      take(1),
+      switchMap(() => {
+        this.superHeroFetchResource.reload();
+        this.allSuperHeroesResource.reload();
+        return of(true);
+      }),
+      tap(() => {
+        this.notificationBus.notify({ message: 'Super héroe eliminado correctamente' });
+      }),
+      catchError(() => {
+        return throwError(() => new Error('Error al eliminar el super héroe'));
+      }),
+    );
   }
 }
