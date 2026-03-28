@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import {
   FormArray,
   FormBuilder,
@@ -9,7 +10,6 @@ import {
 } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filter, take } from 'rxjs';
 import { Title } from '../../../shared/components/title/title';
 import {
   HEIGHT_REGEX,
@@ -25,6 +26,7 @@ import {
   LETTER_OR_NA_REGEX,
   ONLY_NUMBERS_3_4_REGEX,
 } from '../../../shared/regex/regex';
+import { NotificationEventBus } from '../../../shared/services/notification-event-bus';
 import { ErrorMessageForm } from '../../directives/error-message-form';
 import { InputUpperCase } from '../../directives/input-upper-case';
 import {
@@ -42,7 +44,7 @@ import {
 } from '../../models/interfaces/super-heroe-form.interface';
 import { CreateSuperHeroRequest } from '../../models/types/request/create-super-heroe.request.type';
 import { UpdateSuperHeroRequest } from '../../models/types/request/update-super-heroe.request.type';
-import { SuperHeroEventBus } from '../../services/super-hero-event-bus';
+import { SuperHeroActionService } from '../../services/super-hero-action';
 import { SuperHeroViewService } from '../../services/super-hero-view';
 import { noDuplicatesValidator } from '../../validator/non-duplicates.validator';
 
@@ -66,15 +68,17 @@ import { noDuplicatesValidator } from '../../validator/non-duplicates.validator'
   templateUrl: './super-hero-form.html',
   styleUrl: './super-hero-form.css',
 })
-export class SuperHeroForm {
+export class SuperHeroForm implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly superHeroesViewService = inject(SuperHeroViewService);
-  private readonly superHeroEventBus = inject(SuperHeroEventBus);
+  private readonly superHeroActionService = inject(SuperHeroActionService);
+  private readonly notificationBus = inject(NotificationEventBus);
+  readonly superHeroToEdit = computed(() => this.superHeroesViewService.selectedSuperHero());
+  superHeroAsFormValue = toObservable(this.superHeroesViewService.selectedSuperToFormValue);
   isEditMode = false;
-  superHeroToEdit = this.superHeroesViewService.selectedSuperHero();
-  superHeroFG!: SuperHeroFormGroup;
+  superHeroFG: SuperHeroFormGroup = this.superHeroInitForm();
   PUBLISHERS_INFO = PUBLISHERS_INFO;
   GENDERS_INFO = GENDERS_INFO;
   POWERS_INFO = POWERS_INFO;
@@ -82,8 +86,6 @@ export class SuperHeroForm {
   CombatProfileEnum = CombatProfileEnum;
 
   constructor() {
-    this.superHeroInitForm();
-
     effect(() => {
       const id = this.route.snapshot.paramMap.get('id');
       this.isEditMode = !!id;
@@ -93,19 +95,6 @@ export class SuperHeroForm {
         return;
       } else {
         this.superHeroesViewService.selectHero(null);
-        this.superHeroFG.reset();
-      }
-    });
-
-    effect(() => {
-      const selectedSuperHero = this.superHeroesViewService.selectedSuperToFormValue();
-      if (selectedSuperHero) {
-        this.superHeroFG.patchValue(selectedSuperHero);
-        this.setArrayValues(this.weaponsArray, selectedSuperHero.weapons ?? []);
-        this.setArrayValues(this.abilitiesArray, selectedSuperHero.abilities ?? []);
-        this.setArrayValues(this.weaknessesArray, selectedSuperHero.weaknesses ?? []);
-        this.setArrayValues(this.powersArray, selectedSuperHero.power?.powers ?? []);
-        this.superHeroFG.markAllAsTouched();
       }
     });
   }
@@ -125,6 +114,18 @@ export class SuperHeroForm {
     return this.superHeroFG.controls.power.controls.powers;
   }
 
+  ngOnInit() {
+    this.superHeroAsFormValue
+      .pipe(
+        filter((superHeroF: SuperHeroFormValue | null) => superHeroF !== null),
+        take(1),
+      )
+      .subscribe({
+        next: (selectedSuperToFormValue: SuperHeroFormValue) =>
+          this.patchFormWithSelectedHero(selectedSuperToFormValue),
+      });
+  }
+
   addArrayItem(array: FormArray<FormControl<string>>, type: CombatProfileEnum): void {
     if (array.length < COMBAT_TYPE_MAX_ITEMS[type]) {
       array.push(
@@ -136,9 +137,9 @@ export class SuperHeroForm {
       return;
     }
 
-    this.superHeroesViewService.showMessage(
-      `Solo se permiten hasta (${COMBAT_TYPE_MAX_ITEMS[type]}) items de ${type}`,
-    );
+    this.notificationBus.notify({
+      message: `Solo se permiten hasta (${COMBAT_TYPE_MAX_ITEMS[type]}) items de ${type}`,
+    });
   }
 
   removeArrayItem(array: FormArray<FormControl<string>>, index: number): void {
@@ -148,49 +149,74 @@ export class SuperHeroForm {
   saveOrUpdate(): void {
     const formValue = this.superHeroFG.getRawValue() as SuperHeroFormValue;
 
-    const superHeroNameExists = this.superHeroesViewService
-      .superHeroes()
-      .some(
-        (hero) =>
-          hero.name.toLowerCase() === formValue.name.trim().toLowerCase() &&
-          hero.id !== this.superHeroToEdit?.id,
-      );
-
-    if (this.superHeroFG.invalid) {
-      this.superHeroesViewService.showMessage('Por favor, complete correctamente el formulario');
-      this.superHeroFG.markAllAsTouched();
-      return;
-    }
-
-    if (superHeroNameExists) {
-      this.superHeroesViewService.showMessage('Ya existe un super héroe con ese nombre');
-      this.superHeroFG.controls.name.setErrors({ duplicate: true });
-      return;
-    }
-
-    if (!formValue.name.trim()) {
-      this.superHeroesViewService.showMessage('El nombre es requerido');
-      this.superHeroFG.controls.name.setErrors({ required: true });
-      return;
-    }
+    if (!this.isFormValid()) return;
 
     const payload = this.superHeroesViewService.createPayload(formValue, this.isEditMode);
+    const actionType = this.isEditMode ? 'UPDATE' : 'CREATE';
+    const errorMsg =
+      actionType === 'UPDATE'
+        ? 'Error al actualizar el super héroe'
+        : 'Error al crear el super héroe';
 
-    if (this.isEditMode) {
-      this.superHeroEventBus.onAction('UPDATE', payload as UpdateSuperHeroRequest);
-      return;
-    }
-    this.superHeroEventBus.onAction('CREATE', payload as CreateSuperHeroRequest);
+    this.superHeroActionService
+      .onAction({
+        type: actionType,
+        payload: payload as UpdateSuperHeroRequest | CreateSuperHeroRequest,
+      })
+      .subscribe({
+        next: () => this.router.navigate(['/heroes']),
+        error: (error) =>
+          this.notificationBus.notify({
+            message: error.message || errorMsg,
+          }),
+      });
   }
 
   deleteHero(): void {
-    if (!this.superHeroToEdit) return;
+    if (!this.superHeroToEdit()) return;
 
-    this.superHeroEventBus.onAction('DELETE', this.superHeroToEdit);
+    const hero = this.superHeroToEdit()!;
+
+    this.superHeroActionService.onAction({ type: 'DELETE', payload: hero }).subscribe({
+      error: (error) =>
+        this.notificationBus.notify({
+          message: error.message || 'Error al eliminar el super héroe',
+        }),
+    });
   }
 
   goBack() {
     this.router.navigate(['/heroes']);
+  }
+
+  private isFormValid(): boolean {
+    const formValue = this.superHeroFG.getRawValue() as SuperHeroFormValue;
+    if (this.superHeroFG.invalid) {
+      this.notificationBus.notify({ message: 'Por favor, complete correctamente el formulario' });
+      this.superHeroFG.markAllAsTouched();
+      return false;
+    }
+
+    if (!formValue.name.trim()) {
+      this.notificationBus.notify({ message: 'El nombre es requerido' });
+      this.superHeroFG.controls.name.setErrors({ required: true });
+      return false;
+    }
+
+    const nameExists = this.superHeroesViewService
+      .superHeroes()
+      .some(
+        (hero) =>
+          hero.name.toLowerCase() === formValue.name.trim().toLowerCase() && !this.isEditMode,
+      );
+
+    if (nameExists) {
+      this.notificationBus.notify({ message: 'Ya existe un super héroe con ese nombre' });
+      this.superHeroFG.controls.name.setErrors({ duplicate: true });
+      return false;
+    }
+
+    return true;
   }
 
   private setArrayValues(array: FormArray<FormControl<string>>, values: string[]): void {
@@ -217,8 +243,8 @@ export class SuperHeroForm {
     ]);
   }
 
-  private superHeroInitForm(): void {
-    this.superHeroFG = this.fb.nonNullable.group({
+  private superHeroInitForm(): SuperHeroFormGroup {
+    return this.fb.nonNullable.group({
       name: ['', [Validators.required, Validators.pattern(LETTER_NUMBER_REGEX)]],
       civilOccupation: ['N/A', [Validators.pattern(LETTER_OR_NA_REGEX)]],
       publisher: [UNKNOWN_PUBLISHER_INFO, Validators.required],
@@ -253,5 +279,14 @@ export class SuperHeroForm {
         secretPower: ['N/A', [Validators.required, Validators.pattern(LETTER_OR_NA_REGEX)]],
       }),
     }) as SuperHeroFormGroup;
+  }
+
+  private patchFormWithSelectedHero(selectedSuperHero: SuperHeroFormValue): void {
+    this.superHeroFG.patchValue(selectedSuperHero);
+    this.setArrayValues(this.weaponsArray, selectedSuperHero.weapons ?? []);
+    this.setArrayValues(this.abilitiesArray, selectedSuperHero.abilities ?? []);
+    this.setArrayValues(this.weaknessesArray, selectedSuperHero.weaknesses ?? []);
+    this.setArrayValues(this.powersArray, selectedSuperHero.power?.powers ?? []);
+    this.superHeroFG.markAllAsTouched();
   }
 }
