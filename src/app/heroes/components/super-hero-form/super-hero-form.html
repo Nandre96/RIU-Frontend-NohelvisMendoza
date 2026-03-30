@@ -71,7 +71,7 @@
     </div>
   </div>
 
-  <app-title title="Perfil" icon="account_circle"></app-title>
+  <app-title title="Perfil" icon="account_circle" />
 
   <div formGroupName="profile" class="grid grid-cols-2 gap-4">
     <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
@@ -136,7 +136,13 @@
       <mat-error appErrorMessageForm></mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="col-span-2">
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
+      <mat-label>Saludo Predeterminado</mat-label>
+      <input matInput formControlName="greeting" />
+      <mat-error appErrorMessageForm></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="col-span-2 md:col-span-1">
       <mat-label>Foto de perfil Url</mat-label>
       <input type="url" matInput formControlName="profileUrl" />
       <mat-hint>Sólo formato (.jpg, .jpeg, .png)</mat-hint>

@@ -7,6 +7,7 @@ export interface SuperHeroView {
   id: number;
   name: string;
   slug: string;
+  greeting: string;
   profile: ProfileView;
   power: PowerView;
   publisher: PublisherView;

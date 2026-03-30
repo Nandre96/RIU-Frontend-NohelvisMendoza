@@ -27,6 +27,7 @@ export class SuperHeroAdapterService {
       profile: {
         ...hero.profile,
         gender: GENDER_INFO[hero.profile.gender] ?? UNKNOWN_GENDER,
+        greeting: hero.greeting,
       },
       power: {
         powers: hero.power.powers.join(', '),
@@ -58,6 +59,7 @@ export class SuperHeroAdapterService {
         species: hero.profile.species,
         height: hero.profile.height,
         creationYear: hero.profile.creationYear,
+        greeting: hero.profile.greeting,
         gender: hero.profile.gender,
         primaryColor: hero.profile.primaryColor,
         profileUrl: hero.profile.logoUrl,
@@ -82,6 +84,7 @@ export class SuperHeroAdapterService {
         gender: formValue.profile.gender.id,
         logoUrl: formValue.profile.profileUrl,
       },
+      greeting: formValue.profile.greeting,
       publisherId: formValue.publisher.id,
       power: {
         ...formValue.power,

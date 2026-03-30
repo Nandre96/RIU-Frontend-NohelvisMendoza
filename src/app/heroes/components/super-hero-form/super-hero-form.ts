@@ -84,6 +84,7 @@ export class SuperHeroForm implements OnInit {
   POWERS_INFO = POWERS_INFO;
   AFFILIATION_OPTIONS = AFFILIATION_OPTIONS;
   CombatProfileEnum = CombatProfileEnum;
+  routeId = computed(() => this.route.snapshot.paramMap.get('id'));
 
   constructor() {
     effect(() => {
@@ -256,6 +257,7 @@ export class SuperHeroForm implements OnInit {
         origin: ['', [Validators.required, Validators.pattern(LETTER_NUMBER_REGEX)]],
         species: ['', [Validators.required, Validators.pattern(LETTER_OR_NA_REGEX)]],
         height: ['', [Validators.required, Validators.pattern(HEIGHT_REGEX)]],
+        greeting: ['Hola', [Validators.pattern(LETTER_NUMBER_REGEX)]],
         creationYear: [
           100,
           [
