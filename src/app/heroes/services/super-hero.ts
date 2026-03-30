@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SuperHeroResponse } from '../models/interfaces/response/super-hero.response.interface';
-import { SuperHeroRepository } from '../models/interfaces/supe-hero-repository.interface';
+import { SuperHeroRepository } from '../models/interfaces/super-hero-repository.interface';
 import { CreateSuperHeroRequest } from '../models/types/request/create-super-hero.request.type';
 import { UpdateSuperHeroRequest } from '../models/types/request/update-super-hero.request.type';
 

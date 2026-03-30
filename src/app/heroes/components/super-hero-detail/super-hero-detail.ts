@@ -25,7 +25,7 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
     ColoredLabelValue,
     MatButtonModule,
     Buttons,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './super-hero-detail.html',
   styleUrl: './super-hero-detail.css',

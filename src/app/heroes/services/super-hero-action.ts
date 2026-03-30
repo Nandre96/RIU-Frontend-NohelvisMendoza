@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { EMPTY, filter, Observable, of, switchMap } from 'rxjs';
+import { filter, Observable, of, switchMap } from 'rxjs';
 import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog';
 import { SuperHeroView } from '../models/interfaces/view/super-hero.view.interface';
 import { CreateSuperHeroRequest } from '../models/types/request/create-super-hero.request.type';
