@@ -89,7 +89,7 @@ export class SuperHeroViewService {
   createHero(payload: CreateSuperHeroRequest): Observable<SuperHeroView> {
     return this.superHeroService.create(payload).pipe(
       take(1),
-      map((created) => this.superHeroAdapter.toSuperHeroView(created)),
+      map((created: SuperHeroResponse) => this.superHeroAdapter.toSuperHeroView(created)),
       switchMap((hero: SuperHeroView) => {
         this.superHeroFetchResource.reload();
         return of(hero);
@@ -104,7 +104,7 @@ export class SuperHeroViewService {
   updateHero(payload: UpdateSuperHeroRequest): Observable<SuperHeroView> {
     return this.superHeroService.update(payload).pipe(
       take(1),
-      map((updated) => this.superHeroAdapter.toSuperHeroView(updated)),
+      map((updated: SuperHeroResponse) => this.superHeroAdapter.toSuperHeroView(updated)),
       switchMap((updatedHero: SuperHeroView) => {
         this.superHeroFetchResource.reload();
         return of(updatedHero);

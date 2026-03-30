@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,7 +11,6 @@ import { LoadingService } from './shared/services/loading';
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    CommonModule,
     MatDividerModule,
     RouterLinkWithHref,
     RouterModule,

@@ -51,7 +51,6 @@ import { noDuplicatesValidator } from '../../validator/non-duplicates.validator'
 @Component({
   selector: 'app-super-hero-form',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     InputUpperCase,

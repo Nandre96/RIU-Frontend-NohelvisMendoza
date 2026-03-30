@@ -29,8 +29,11 @@ export class SuperHeroItem {
   showHeroGreeting() {
     const hero = this.superHero();
     this.notificationBus.notify({
-      message: `¡Hola, soy ${hero.name}!`,
-      duration: 300,
+      message: `${hero.profile.greeting}`,
+      duration: 800,
+      horizontalPosition: 'start',
+      verticalPosition: 'top',
+      action: `${hero.publisher.label}`,
     });
   }
 }

@@ -1,18 +1,18 @@
-@let superHeroeDetail = this.superHeroesViewService.superHeroDetail();
+@let superHeroDetail = this.superHeroesViewService.superHeroDetail();
 
-@if (superHeroeDetail) {
-  @let profileInfo = superHeroeDetail.profile;
-  @let publisherInfo = superHeroeDetail.publisher;
+@if (superHeroDetail) {
+  @let profileInfo = superHeroDetail.profile;
+  @let publisherInfo = superHeroDetail.publisher;
   <div class="flex flex-row justify-between gap-4 my-3">
     <div class="flex gap-3">
-      <h1 class="text-4xl cursor-pointer" [matTooltip]="superHeroeDetail.power.secretPower">
-        {{ superHeroeDetail.name }}
+      <h1 class="text-4xl cursor-pointer" [matTooltip]="superHeroDetail.power.secretPower">
+        {{ superHeroDetail.name }}
       </h1>
       <mat-divider vertical></mat-divider>
-      <span class="text-2xl self-center text-blue-500">{{ superHeroeDetail.civilOccupation }}</span>
+      <span class="text-2xl self-center text-blue-500">{{ superHeroDetail.civilOccupation }}</span>
     </div>
 
-    <app-buttons [superHeroe]="superHeroeDetail" />
+    <app-buttons [superHero]="superHeroDetail" />
   </div>
 
   <div class="flex flex-col gap-6 py-4">
@@ -20,7 +20,7 @@
       <mat-card-header>
         <h3
           class="text-2xl tracking-[0.3rem] uppercase"
-          [style.color]="superHeroeDetail.profile.primaryColor || 'black'"
+          [style.color]="superHeroDetail.profile.primaryColor || 'black'"
         >
           Perfil
         </h3>
@@ -31,14 +31,14 @@
           <figure class="relative aspect-square h-80 overflow-hidden">
             <img
               class="w-full h-full object-contain"
-              [src]="superHeroeDetail.profile.logoUrl"
-              [alt]="superHeroeDetail.name"
+              [src]="superHeroDetail.profile.logoUrl"
+              [alt]="superHeroDetail.name"
             />
           </figure>
           <div class="grid grid-flow-row-dense auto-rows-max gap-1">
             <app-colored-label-value
               [label]="'Nombre:'"
-              [value]="superHeroeDetail.name"
+              [value]="superHeroDetail.name"
             ></app-colored-label-value>
 
             <app-colored-label-value
@@ -68,7 +68,7 @@
 
             <app-colored-label-value
               [label]="'Ocupación:'"
-              [value]="superHeroeDetail.civilOccupation"
+              [value]="superHeroDetail.civilOccupation"
             ></app-colored-label-value>
 
             <app-colored-label-value
@@ -84,7 +84,7 @@
       <mat-card-header>
         <h3
           class="text-2xl tracking-[0.3rem] uppercase"
-          [style.color]="superHeroeDetail.profile.primaryColor || 'black'"
+          [style.color]="superHeroDetail.profile.primaryColor || 'black'"
         >
           General
         </h3>
@@ -98,32 +98,29 @@
             <span class="text-xl mb-1">Nivel de poder</span>
             <span
               class="inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold text-white w-1/2"
-              [style.background-color]="superHeroeDetail.power.level.color"
-              [matTooltip]="superHeroeDetail.power.secretPower"
+              [style.background-color]="superHeroDetail.power.level.color"
+              [matTooltip]="superHeroDetail.power.secretPower"
             >
-              {{ superHeroeDetail.power.level.label }}
+              {{ superHeroDetail.power.level.label }}
             </span>
 
-            <p class="mb-0 text-xl">{{ superHeroeDetail.power.powers }}</p>
+            <p class="mb-0 text-xl">{{ superHeroDetail.power.powers }}</p>
 
             <div class="grid grid-cols-1 xl:grid-cols-3">
-              <app-chip-list [list]="superHeroeDetail.weapons" title="Armas"></app-chip-list>
+              <app-chip-list [list]="superHeroDetail.weapons" title="Armas"></app-chip-list>
               <app-chip-list
-                [list]="superHeroeDetail.weaknesses"
+                [list]="superHeroDetail.weaknesses"
                 title="Debilidades"
               ></app-chip-list>
-              <app-chip-list
-                [list]="superHeroeDetail.abilities"
-                title="Habilidades"
-              ></app-chip-list>
+              <app-chip-list [list]="superHeroDetail.abilities" title="Habilidades"></app-chip-list>
             </div>
           </div>
 
           <div class="flex flex-col lg:flex-row">
             <app-publisher-info [publisher]="publisherInfo" />
-            <div class="w-1/2 flex flex-col">
+            <div class="w-1/2 flex flex-col gap-3">
               <p class="text-2xl tracking-widest uppercase">Afiliación</p>
-              @for (aff of superHeroeDetail.affiliation; track aff.id) {
+              @for (aff of superHeroDetail.affiliation; track aff.id) {
                 <mat-chip>{{ aff.label }}</mat-chip>
               }
             </div>
@@ -131,5 +128,14 @@
         </div>
       </mat-card-content>
     </mat-card>
+  </div>
+}
+
+@if (!superHeroDetail && !this.superHeroesViewService.superHeroDetailResource.isLoading()) {
+  <div class="flex flex-col items-center justify-center gap-4 py-20">
+    <span class="text-6xl">🦸‍♂️</span>
+    <h1 class="text-3xl font-semibold tracking-wide">Super Héroe no encontrado</h1>
+    <p class="text-gray-500 text-lg">El súper héroe que buscas no existe o fue eliminado.</p>
+    <a mat-flat-button color="primary" [routerLink]="['/heroes']"> Volver al listado </a>
   </div>
 }

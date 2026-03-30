@@ -8,36 +8,48 @@ import { SuperHeroView } from '../../models/interfaces/view/super-hero.view.inte
 import { SuperHeroViewService } from '../../services/super-hero-view';
 import { SuperHeroList } from './super-hero-list';
 
-const mockHeroes: SuperHeroView[] = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  name: `Hero ${i + 1}`,
-  slug: `hero-${i + 1}`,
-  civilOccupation: 'Occupation',
-  abilities: ['programar', 'pensar', 'resolver problemas', 'trabajar en equipo', 'aprender rápido'],
-  weapons: ['teclado', 'monitor', 'café', 'notebook', 'mouse'],
-  weaknesses: ['bugs', 'epics'],
-  affiliation: [i > 15 ? AFFILIATION_OPTIONS[0] : AFFILIATION_OPTIONS[i]],
-  profile: {
-    origin: 'Origin',
-    height: '1.50',
-    creationYear: 1996,
-    species: 'Human',
-    gender: { id: 1, name: 'Female' },
-    primaryColor: 'blue',
-    logoUrl: 'https://i.pinimg.com/1200x/5e/59/c4/5e59c43bce967816d5ef4a53eaad2192.jpg',
-  },
-  power: {
-    powers: ['Jira', 'Confluence', 'GitHub', 'CI/CD', 'Testing'].join(', '),
-    level: GODLIKE_POWER_LEVEL_META,
-    secretPower: 'Secret',
-  },
-  publisher: UNKNOWN_PUBLISHER_INFO,
-}));
+const mockHeroes: SuperHeroView[] = Array.from({ length: 15 }, (_, i) => {
+  const heroId = i + 1;
+  const superHero = {
+    id: heroId,
+    name: `Hero ${heroId}`,
+    slug: `hero-${heroId}`,
+    civilOccupation: 'Occupation',
+    abilities: [
+      'programar',
+      'pensar',
+      'resolver problemas',
+      'trabajar en equipo',
+      'aprender rápido',
+    ],
+    weapons: ['teclado', 'monitor', 'café', 'notebook', 'mouse'],
+    weaknesses: ['bugs', 'epics'],
+    affiliation: [i > 15 ? AFFILIATION_OPTIONS[0] : AFFILIATION_OPTIONS[i]],
+    profile: {
+      origin: 'Origin',
+      height: '1.50',
+      creationYear: 1996,
+      greeting: `Hello, I am Hero ${heroId}`,
+      species: 'Human',
+      gender: { id: 1, name: 'Female' },
+      primaryColor: 'blue',
+      logoUrl: 'https://i.pinimg.com/1200x/5e/59/c4/5e59c43bce967816d5ef4a53eaad2192.jpg',
+    },
+    power: {
+      powers: ['Jira', 'Confluence', 'GitHub', 'CI/CD', 'Testing'].join(', '),
+      level: GODLIKE_POWER_LEVEL_META,
+      secretPower: 'Secret',
+    },
+    publisher: UNKNOWN_PUBLISHER_INFO,
+  };
+  return superHero;
+});
 
 const MIN_PAGE_SIZE = 5;
 const INITIAL_PAGE_SIZE = 10;
 const TOTAL_HEROES = mockHeroes.length;
 const PAGINATION_MOCK = { pageIndex: 1, pageSize: INITIAL_PAGE_SIZE, length: TOTAL_HEROES };
+
 describe('SuperHeroList', () => {
   let componentToTest: SuperHeroList;
   let fixture: ComponentFixture<SuperHeroList>;

@@ -12,13 +12,13 @@ import { NotificationEventBus } from '../../services/notification-event-bus';
   styleUrl: './buttons.css',
 })
 export class Buttons {
-  superHeroe = input.required<SuperHeroView>();
+  superHero = input.required<SuperHeroView>();
   private superHeroAction = inject(SuperHeroActionService);
   private readonly router = inject(Router);
   private readonly notificationBus = inject(NotificationEventBus);
 
   onEdit() {
-    this.superHeroAction.onAction({ type: 'EDIT_MODE', payload: this.superHeroe() }).subscribe({
+    this.superHeroAction.onAction({ type: 'EDIT_MODE', payload: this.superHero() }).subscribe({
       next: (superHeroView: SuperHeroView | boolean) => {
         if (typeof superHeroView === 'object') {
           this.router.navigate(['/heroes', superHeroView.id, 'edit']);
@@ -33,7 +33,7 @@ export class Buttons {
   }
 
   onDelete() {
-    this.superHeroAction.onAction({ type: 'DELETE', payload: this.superHeroe() }).subscribe({
+    this.superHeroAction.onAction({ type: 'DELETE', payload: this.superHero() }).subscribe({
       error: (err) => {
         this.notificationBus.notify({ message: err.message || 'Error al eliminar el super héroe' });
       },

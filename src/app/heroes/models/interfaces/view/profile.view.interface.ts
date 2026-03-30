@@ -7,5 +7,6 @@ export interface ProfileView {
   species: string;
   gender: GenderView;
   primaryColor: string;
+  greeting: string;
   logoUrl: string;
 }

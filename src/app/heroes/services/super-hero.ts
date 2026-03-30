@@ -25,7 +25,7 @@ export class SuperHeroService implements SuperHeroRepository {
   getByName(name: string): Observable<SuperHeroResponse[]> {
     const normalizedName = name.trim().toLowerCase();
     return this.getAll().pipe(
-      map((heroes) =>
+      map((heroes: SuperHeroResponse[]) =>
         !normalizedName
           ? heroes
           : heroes.filter((h) => h.name.toLowerCase().includes(normalizedName)),
@@ -33,15 +33,15 @@ export class SuperHeroService implements SuperHeroRepository {
     );
   }
 
-  create(superHeroe: CreateSuperHeroRequest): Observable<SuperHeroResponse> {
-    return this.http.post<SuperHeroResponse>(this.baseUrl, superHeroe);
+  create(superHero: CreateSuperHeroRequest): Observable<SuperHeroResponse> {
+    return this.http.post<SuperHeroResponse>(this.baseUrl, superHero);
   }
 
-  update(superHeroe: UpdateSuperHeroRequest): Observable<SuperHeroResponse> {
-    if (superHeroe.id == null) {
+  update(superHero: UpdateSuperHeroRequest): Observable<SuperHeroResponse> {
+    if (superHero.id == null) {
       throw new Error('Id requerido para actualizar');
     }
-    return this.http.put<SuperHeroResponse>(`${this.baseUrl}/${superHeroe.id}`, superHeroe);
+    return this.http.put<SuperHeroResponse>(`${this.baseUrl}/${superHero.id}`, superHero);
   }
 
   delete(id: number): Observable<void> {

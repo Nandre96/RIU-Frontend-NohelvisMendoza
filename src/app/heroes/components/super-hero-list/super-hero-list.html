@@ -30,7 +30,7 @@
   </div>
 }
 
-@if (superHeroes.length === 0 && !superHeroesViewService.allSuperHeroesResource.isLoading()) {
+@if (superHeroes.length === 0 && !superHeroesViewService.superHeroFetchResource.isLoading()) {
   <div class="flex flex-col justify-center items-center py-10">
     <mat-icon fontSize="large" color="warn">search_off</mat-icon>
     <p class="text-lg text-gray-500 mt-2">No se encontraron héroes {{ `(${searchValue()})` }}</p>
