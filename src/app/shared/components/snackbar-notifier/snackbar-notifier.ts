@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { exhaustMap } from 'rxjs';
 import { NotificationEvent } from '../../models/interfaces/notification.interface';
@@ -15,12 +14,11 @@ export class SnackBarNotifier {
   private notificationBus = inject(NotificationEventBus);
 
   ngOnInit() {
-    this.listenAnyNotification().subscribe({});
+    this.listenAnyNotification().subscribe();
   }
 
   private listenAnyNotification() {
     return this.notificationBus.onEvent().pipe(
-      takeUntilDestroyed(),
       exhaustMap((event: NotificationEvent) => {
         return this.showSnackBar(event);
       }),
@@ -29,10 +27,11 @@ export class SnackBarNotifier {
 
   private showSnackBar(event: NotificationEvent) {
     return this.snackBar
-      .open(event.message, 'Cerrar', {
-        duration: event.duration || 3000,
+      .open(event.message, event.action || 'Cerrar', {
+        duration: event.duration || 1500,
+        ...(event.horizontalPosition && { horizontalPosition: event.horizontalPosition }),
+        ...(event.verticalPosition && { verticalPosition: event.verticalPosition }),
       })
-      .afterDismissed()
-      .pipe(takeUntilDestroyed());
+      .afterDismissed();
   }
 }
