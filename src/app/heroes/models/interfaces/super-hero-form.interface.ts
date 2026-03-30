@@ -1,5 +1,4 @@
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { PowerLevelEnum } from '../enum/power-level.enum';
 import { AffiliationView } from './view/affiliation.view.interface';
 import { GenderView } from './view/gender.view.interface';
 import { PowerLevelView } from './view/power-level.view.interface';
@@ -17,6 +16,7 @@ export interface SuperHeroFormValue {
     origin: string;
     species: string;
     height: string;
+    greeting: string;
     creationYear: number;
     gender: GenderView;
     primaryColor: string;
@@ -41,6 +41,7 @@ export type SuperHeroFormGroup = FormGroup<{
     origin: FormControl<string | null>;
     species: FormControl<string>;
     height: FormControl<string>;
+    greeting: FormControl<string>;
     creationYear: FormControl<number>;
     gender: FormControl<GenderView>;
     primaryColor: FormControl<string>;

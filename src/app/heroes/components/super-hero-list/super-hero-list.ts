@@ -12,13 +12,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { SuperHeroViewService } from '../../services/super-hero-view';
-import { SuperHeroeItem } from '../super-heroe-item/super-heroe-item';
+import { SuperHeroItem } from '../super-hero-item/super-hero-item';
 @Component({
   selector: 'app-super-hero-list',
   imports: [
     MatGridListModule,
     MatButtonModule,
-    SuperHeroeItem,
+    SuperHeroItem,
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,

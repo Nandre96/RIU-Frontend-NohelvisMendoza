@@ -8,13 +8,14 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { fakeBackendInterceptor } from './core/interceptors/fake-backend-interceptor';
+import { loadingInterceptor } from './core/interceptors/loading-interceptor';
 import { matPaginatorEsFactory } from './shared/i18n/mat-paginator-es';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([fakeBackendInterceptor])),
+    provideHttpClient(withInterceptors([loadingInterceptor, fakeBackendInterceptor])),
     { provide: MatPaginatorIntl, useFactory: matPaginatorEsFactory },
   ],
 };

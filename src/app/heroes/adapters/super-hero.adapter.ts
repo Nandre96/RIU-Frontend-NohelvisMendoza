@@ -6,11 +6,11 @@ import { PUBLISHER_INFO } from '../models/const/publisher.const';
 import { AffiliationEnum } from '../models/enum/affiliation.enum';
 import { UniverseEnum } from '../models/enum/universe.enum';
 import { SuperHeroResponse } from '../models/interfaces/response/super-hero.response.interface';
-import { SuperHeroFormValue } from '../models/interfaces/super-heroe-form.interface';
+import { SuperHeroFormValue } from '../models/interfaces/super-hero-form.interface';
 import { AffiliationView } from '../models/interfaces/view/affiliation.view.interface';
 import { SuperHeroView } from '../models/interfaces/view/super-hero.view.interface';
-import { CreateSuperHeroRequest } from '../models/types/request/create-super-heroe.request.type';
-import { UpdateSuperHeroRequest } from '../models/types/request/update-super-heroe.request.type';
+import { CreateSuperHeroRequest } from '../models/types/request/create-super-hero.request.type';
+import { UpdateSuperHeroRequest } from '../models/types/request/update-super-hero.request.type';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +27,7 @@ export class SuperHeroAdapterService {
       profile: {
         ...hero.profile,
         gender: GENDER_INFO[hero.profile.gender] ?? UNKNOWN_GENDER,
+        greeting: hero.greeting,
       },
       power: {
         powers: hero.power.powers.join(', '),
@@ -58,6 +59,7 @@ export class SuperHeroAdapterService {
         species: hero.profile.species,
         height: hero.profile.height,
         creationYear: hero.profile.creationYear,
+        greeting: hero.profile.greeting,
         gender: hero.profile.gender,
         primaryColor: hero.profile.primaryColor,
         profileUrl: hero.profile.logoUrl,
@@ -82,6 +84,7 @@ export class SuperHeroAdapterService {
         gender: formValue.profile.gender.id,
         logoUrl: formValue.profile.profileUrl,
       },
+      greeting: formValue.profile.greeting,
       publisherId: formValue.publisher.id,
       power: {
         ...formValue.power,

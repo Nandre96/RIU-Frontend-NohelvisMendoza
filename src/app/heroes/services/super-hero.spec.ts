@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { fakeBackendInterceptor } from '../../core/interceptors/fake-backend-interceptor';
 import { GenderEnum } from '../models/enum/gender.enum';
 import { PowerLevelEnum } from '../models/enum/power-level.enum';
-import { CreateSuperHeroRequest } from '../models/types/request/create-super-heroe.request.type';
+import { CreateSuperHeroRequest } from '../models/types/request/create-super-hero.request.type';
 import { SuperHeroService } from './super-hero';
 
 describe('SuperHeroService', () => {
@@ -18,6 +18,7 @@ describe('SuperHeroService', () => {
     weapons: ['Laptop'],
     abilities: ['Testing'],
     weaknesses: ['Bugs'],
+    greeting: `Hello, I am ${name}`,
     profile: {
       origin: 'Lab',
       height: '1.80 m',

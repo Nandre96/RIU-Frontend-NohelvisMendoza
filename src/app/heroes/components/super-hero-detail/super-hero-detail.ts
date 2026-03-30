@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import { Buttons } from '../../../shared/components/buttons/buttons';
 import { ChipList } from '../../../shared/components/chip-list/chip-list';
 import { ColoredLabelValue } from '../../../shared/components/colored-label-value/colored-label-value';
@@ -16,11 +15,9 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
 @Component({
   selector: 'app-super-hero-detail',
   imports: [
-    CommonModule,
     MatCardModule,
     MatDividerModule,
     MatExpansionModule,
-    MatProgressSpinner,
     MatTooltip,
     MatChipsModule,
     ChipList,
@@ -28,6 +25,7 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
     ColoredLabelValue,
     MatButtonModule,
     Buttons,
+    RouterLink,
   ],
   templateUrl: './super-hero-detail.html',
   styleUrl: './super-hero-detail.css',
@@ -35,10 +33,11 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
 export class SuperHeroDetail {
   private readonly route = inject(ActivatedRoute);
   readonly superHeroesViewService = inject(SuperHeroViewService);
+  readonly param = toSignal<ParamMap | undefined>(this.route.paramMap);
 
   constructor() {
     effect(() => {
-      const id = this.route.snapshot.paramMap.get('id');
+      const id = this.param()?.get('id');
       this.superHeroesViewService.selectAndCheckHero(Number(id));
     });
   }

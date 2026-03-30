@@ -6,6 +6,7 @@ export interface SuperHeroResponse {
   name: string;
   profile: ProfileResponse;
   power: PowerResponse;
+  greeting: string;
   publisherId: number;
   affiliation: number[];
   civilOccupation: string;

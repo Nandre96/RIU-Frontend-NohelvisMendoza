@@ -5,10 +5,11 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { Buttons } from '../../../shared/components/buttons/buttons';
+import { NotificationEventBus } from '../../../shared/services/notification-event-bus';
 import { SuperHeroView } from '../../models/interfaces/view/super-hero.view.interface';
 import { SuperHeroViewService } from '../../services/super-hero-view';
 @Component({
-  selector: 'app-super-heroe-item',
+  selector: 'app-super-hero-item',
   imports: [
     MatCardModule,
     MatTooltipModule,
@@ -17,10 +18,22 @@ import { SuperHeroViewService } from '../../services/super-hero-view';
     RouterLink,
     Buttons,
   ],
-  templateUrl: './super-heroe-item.html',
-  styleUrl: './super-heroe-item.css',
+  templateUrl: './super-hero-item.html',
+  styleUrl: './super-hero-item.css',
 })
-export class SuperHeroeItem {
-  superHeroe = input.required<SuperHeroView>();
+export class SuperHeroItem {
+  superHero = input.required<SuperHeroView>();
   readonly superHeroesViewService = inject(SuperHeroViewService);
+  private notificationBus = inject(NotificationEventBus);
+
+  showHeroGreeting() {
+    const hero = this.superHero();
+    this.notificationBus.notify({
+      message: `${hero.profile.greeting}`,
+      duration: 800,
+      horizontalPosition: 'start',
+      verticalPosition: 'top',
+      action: `${hero.publisher.label}`,
+    });
+  }
 }
