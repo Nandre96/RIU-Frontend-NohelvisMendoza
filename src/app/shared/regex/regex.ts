@@ -5,3 +5,4 @@ export const IMAGE_URL_REGEX = /^https?:\/\/.+\.(?:png|jpe?g)(?:\?.*)?$/i;
 export const LETTER_OR_NA_REGEX = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s\/]+$/;
 export const ONLY_NUMBERS_3_4_REGEX = /^\d{3,4}$/;
 export const HERO_BY_ID_URL_REGEX = /^\/api\/heroes\/\d+$/;
+export const GREETING_REGEX = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9¡!¿?.\s]*$/;

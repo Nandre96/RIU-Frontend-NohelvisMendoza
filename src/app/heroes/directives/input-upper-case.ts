@@ -1,4 +1,4 @@
-import { Directive, ElementRef, inject } from '@angular/core';
+import { Directive, ElementRef, inject, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
@@ -12,6 +12,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class InputUpperCase implements ControlValueAccessor {
   private readonly inputElementRef = inject(ElementRef<HTMLInputElement>);
+  private readonly renderer = inject(Renderer2);
+
   private onChange: (value: string) => void = () => {};
   private onTouched: () => void = () => {};
 
@@ -20,7 +22,8 @@ export class InputUpperCase implements ControlValueAccessor {
     const { selectionStart, selectionEnd, value } = input;
 
     const upperCasedInput = value.toUpperCase();
-    input.value = upperCasedInput;
+
+    this.renderer.setProperty(input, 'value', upperCasedInput);
     input.setSelectionRange(selectionStart, selectionEnd);
     this.onChange(upperCasedInput);
   }
@@ -30,7 +33,11 @@ export class InputUpperCase implements ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.inputElementRef.nativeElement.value = value ? value.toUpperCase() : '';
+    this.renderer.setProperty(
+      this.inputElementRef.nativeElement,
+      'value',
+      value ? value.toUpperCase() : '',
+    );
   }
 
   registerOnChange(fn: any): void {

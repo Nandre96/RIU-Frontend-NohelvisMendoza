@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
   FormArray,
@@ -20,6 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { filter, take } from 'rxjs';
 import { Title } from '../../../shared/components/title/title';
 import {
+  GREETING_REGEX,
   HEIGHT_REGEX,
   IMAGE_URL_REGEX,
   LETTER_NUMBER_REGEX,
@@ -83,21 +83,6 @@ export class SuperHeroForm implements OnInit {
   POWERS_INFO = POWERS_INFO;
   AFFILIATION_OPTIONS = AFFILIATION_OPTIONS;
   CombatProfileEnum = CombatProfileEnum;
-  routeId = computed(() => this.route.snapshot.paramMap.get('id'));
-
-  constructor() {
-    effect(() => {
-      const id = this.route.snapshot.paramMap.get('id');
-      this.isEditMode = !!id;
-
-      if (this.isEditMode) {
-        this.superHeroesViewService.selectHero(Number(id));
-        return;
-      } else {
-        this.superHeroesViewService.selectHero(null);
-      }
-    });
-  }
 
   get weaponsArray() {
     return this.superHeroFG.controls.weapons;
@@ -115,6 +100,7 @@ export class SuperHeroForm implements OnInit {
   }
 
   ngOnInit() {
+    this.setupSuperHeroForm();
     this.superHeroAsFormValue
       .pipe(
         filter((superHeroF: SuperHeroFormValue | null) => superHeroF !== null),
@@ -256,7 +242,7 @@ export class SuperHeroForm implements OnInit {
         origin: ['', [Validators.required, Validators.pattern(LETTER_NUMBER_REGEX)]],
         species: ['', [Validators.required, Validators.pattern(LETTER_OR_NA_REGEX)]],
         height: ['', [Validators.required, Validators.pattern(HEIGHT_REGEX)]],
-        greeting: ['Hola', [Validators.pattern(LETTER_NUMBER_REGEX)]],
+        greeting: ['Hola', [Validators.pattern(GREETING_REGEX)]],
         creationYear: [
           100,
           [
@@ -280,6 +266,18 @@ export class SuperHeroForm implements OnInit {
         secretPower: ['N/A', [Validators.required, Validators.pattern(LETTER_OR_NA_REGEX)]],
       }),
     }) as SuperHeroFormGroup;
+  }
+
+  setupSuperHeroForm() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.isEditMode = !!id;
+
+    if (this.isEditMode) {
+      this.superHeroesViewService.selectHero(Number(id));
+    } else {
+      this.superHeroesViewService.selectHero(null);
+      this.superHeroFG = this.superHeroInitForm();
+    }
   }
 
   private patchFormWithSelectedHero(selectedSuperHero: SuperHeroFormValue): void {
