@@ -18,6 +18,7 @@ describe('SuperHeroService', () => {
     weapons: ['Laptop'],
     abilities: ['Testing'],
     weaknesses: ['Bugs'],
+    greeting: `Hello, I am ${name}`,
     profile: {
       origin: 'Lab',
       height: '1.80 m',
