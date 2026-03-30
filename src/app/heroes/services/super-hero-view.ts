@@ -22,19 +22,10 @@ export class SuperHeroViewService {
   readonly selectedSuperHeroIdToEdit = signal<number | null>(null);
   readonly selectedHeroIdToCheck = signal<number | null>(null);
 
-  readonly allSuperHeroes = computed<SuperHeroView[]>(() => {
-    const data = this.allSuperHeroesResource.value();
+  readonly superHeroes = computed<SuperHeroView[]>(() => {
+    const data = this.superHeroFetchResource.value();
     if (!data) return [];
     return data.map((hero) => this.superHeroAdapter.toSuperHeroView(hero));
-  });
-
-  readonly superHeroes = computed<SuperHeroView[]>(() => {
-    const allsHero = this.allSuperHeroes();
-    const nameToSearch = this.searchHeroName().trim().toLowerCase();
-    if (!nameToSearch) return allsHero;
-    return allsHero.filter((heroInfo: SuperHeroView) =>
-      heroInfo.name.toLowerCase().includes(nameToSearch),
-    );
   });
 
   readonly superHeroDetail = linkedSignal(() => {
@@ -67,13 +58,9 @@ export class SuperHeroViewService {
     stream: ({ params }) => this.superHeroService.getByName(params.search),
   });
 
-  readonly allSuperHeroesResource = rxResource<SuperHeroResponse[], void>({
-    stream: () => this.superHeroService.getAll(),
-  });
-
   readonly superHeroDetailResource = rxResource<SuperHeroResponse | undefined, number>({
     params: () => this.selectedHeroIdToCheck() ?? 0,
-    stream: ({ params }) => this.superHeroService.getById(params),
+    stream: ({ params }) => (params > 0 ? this.superHeroService.getById(params) : of(undefined)),
   });
 
   setSearch(term: string): void {
@@ -105,7 +92,6 @@ export class SuperHeroViewService {
       map((created) => this.superHeroAdapter.toSuperHeroView(created)),
       switchMap((hero: SuperHeroView) => {
         this.superHeroFetchResource.reload();
-        this.allSuperHeroesResource.reload();
         return of(hero);
       }),
       tap(() => this.notificationBus.notify({ message: 'Super héroe creado correctamente' })),
@@ -121,7 +107,6 @@ export class SuperHeroViewService {
       map((updated) => this.superHeroAdapter.toSuperHeroView(updated)),
       switchMap((updatedHero: SuperHeroView) => {
         this.superHeroFetchResource.reload();
-        this.allSuperHeroesResource.reload();
         return of(updatedHero);
       }),
       tap(() => this.notificationBus.notify({ message: 'Super héroe actualizado correctamente' })),
@@ -136,7 +121,6 @@ export class SuperHeroViewService {
       take(1),
       switchMap(() => {
         this.superHeroFetchResource.reload();
-        this.allSuperHeroesResource.reload();
         return of(true);
       }),
       tap(() => this.notificationBus.notify({ message: 'Super héroe eliminado correctamente' })),
