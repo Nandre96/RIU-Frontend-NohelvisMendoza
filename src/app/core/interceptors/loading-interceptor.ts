@@ -4,10 +4,10 @@ import { finalize, Observable } from 'rxjs';
 import { LoadingService } from '../../shared/services/loading';
 
 export function loadingInterceptor(
-  req: HttpRequest<any>,
+  request: HttpRequest<unknown>,
   next: HttpHandlerFn,
-): Observable<HttpEvent<any>> {
+): Observable<HttpEvent<unknown>> {
   const loadingService = inject(LoadingService);
   loadingService.show();
-  return next(req).pipe(finalize(() => loadingService.hide()));
+  return next(request).pipe(finalize(() => loadingService.hide()));
 }
